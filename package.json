@@ -17,9 +17,13 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "lucide-react": "^0.396.0",
+    "mongodb": "^6.7.0",
+    "mongoose": "^8.4.3",
     "next": "14.2.4",
+    "query-string": "^9.0.0",
     "react": "^18",
     "react-dom": "^18",
+    "svix": "^1.24.0",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
     "uploadthing": "^6.12.0"
