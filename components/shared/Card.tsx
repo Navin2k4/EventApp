@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { DeleteConfirmation } from "./DeleteConfirmation";
-import { Toaster } from "../ui/sonner";
 
 type CardProps = {
   event: IEvent;
