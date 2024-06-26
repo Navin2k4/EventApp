@@ -20,7 +20,7 @@ export const checkoutOrder = async (order: CheckoutOrderParams) => {
       line_items: [
         {
           price_data: {
-            currency: 'usd',
+            currency: 'inr',
             unit_amount: price,
             product_data: {
               name: order.eventTitle
@@ -101,11 +101,19 @@ export async function getOrdersByEvent({ searchString, eventId }: GetOrdersByEve
           buyer: {
             $concat: ['$buyer.firstName', ' ', '$buyer.lastName'],
           },
+          buyerId: '$buyer._id',
+          buyerMail: '$buyer.email'
         },
       },
       {
         $match: {
-          $and: [{ eventId: eventObjectId }, { buyer: { $regex: RegExp(searchString, 'i') } }],
+          $and: [
+            { eventId: eventObjectId },
+            { $or: [
+              { 'buyer': { $regex: RegExp(searchString, 'i') } },
+              { 'buyerMail': { $regex: RegExp(searchString, 'i') } }
+            ]}
+          ],
         },
       },
     ])

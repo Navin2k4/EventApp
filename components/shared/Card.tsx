@@ -16,7 +16,7 @@ const Card = ({ event, hasOrderLink, hidePrice }: CardProps) => {
   const { sessionClaims } = auth();
   const userId = sessionClaims?.userId as string;
   const isEventCreator = userId === event.organizer._id.toString();
-
+  
   return (
     <div className="group relative flex min-h-[380px] w-full max-w-400px flex-col overflow-hidden rounded-xl bg-white shadow-md transition-all hover:shadow-lg md:min-h-[438px]">
       <Link
@@ -40,7 +40,7 @@ const Card = ({ event, hasOrderLink, hidePrice }: CardProps) => {
       )}
 
       <div
-        className="flex min-h-[200px] flex-col gap-3 p-5 md:gap-4"
+        className="flex min-h-[240px] flex-col gap-2 p-5 md:gap-4"
       >
         {!hidePrice && (
           <div className="flex gap-2">
@@ -56,18 +56,21 @@ const Card = ({ event, hasOrderLink, hidePrice }: CardProps) => {
           {formatDateTime(event.startDateTime).dateTime} -{" "}
           {formatDateTime(event.endDateTime).dateTime}
         </p>
+        <p className="p-medium-14 text-gray-500">
+          {event.location}
+        </p>
         <Link href={`/events/${event._id}`}>
         <p className="p-medium-16 md:p-medium-20 line-clamp-2 flex-1 text-black">
           {event.title}
         </p>
         </Link>
         <div className="flex-between w-full ">
-          <p className="p-medium-14 md:p-medium-16 text-gray-600">
+          <p className="p-medium-14 md:p-medium-16 text-primary">
             {event.organizer.firstName} {event.organizer.lastName}
           </p>
           {hasOrderLink && (
-            <Link href={`/orders?/eventId=${event._id}`} className="flex gap-2">
-              <p className="text-primary-500 ">Order Details</p>
+            <Link href={`/orders?eventId=${event._id}`} className="flex gap-2">
+              <p className="text-primary-500 ">Orders</p>
               <Image
                 src="/assets/icons/arrow.svg"
                 alt="search"
@@ -76,6 +79,7 @@ const Card = ({ event, hasOrderLink, hidePrice }: CardProps) => {
               />
             </Link>
           )}
+          
         </div>
       </div>
     </div>
