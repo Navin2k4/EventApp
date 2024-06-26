@@ -24,11 +24,10 @@ const Card = ({ event, hasOrderLink, hidePrice }: CardProps) => {
         style={{ backgroundImage: `url(${event.imageUrl})` }}
         className="flex-center flex-grow bg-gray-50 bg-cover bg-center text-gray-500"
       />
-      {/* IS EVENT CREATOR */}
-
+      {/* IS EVENT CREATOR  then show the delete and the edit functionality to the user it found by matching the session user and the ordanizer id that is the creator of the event*/}
       {isEventCreator && !hidePrice && (
         <div className="absolute right-2 top-2 flex flex-col gap-4 rounded-xl bg-white/70 p-3 shadow-lg backdrop-blur-[2px] transition-all hover:bg-white">
-          <Link href={`/event/${event._id}/update`}>
+          <Link href={`/events/${event._id}/update`}>
             <Image
               src="/assets/icons/edit.svg"
               alt="edit"
@@ -49,7 +48,7 @@ const Card = ({ event, hasOrderLink, hidePrice }: CardProps) => {
             <span className="p-semibold-14 w-min rounded-full bg-green-100 px-4 py-1 text-green-60">
               {event.isFree ? "FREE" : `Rs.${event.price}`}
             </span>
-            <p className="p-semibold-14 w-min rounded-full bg-gray-500/10 px-4 py-1 text-gray-500">
+            <p className="p-semibold-14 w-min rounded-full bg-gray-500/10 px-4 py-1 text-gray-500 line-clamp-1">
               {event.category.name}
             </p>
           </div>

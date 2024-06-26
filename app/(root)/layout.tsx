@@ -1,25 +1,16 @@
-import type { Metadata } from "next";
-import Header from "@/components/shared/Header";
-import Footer from "@/components/shared/Footer";
-
-export const metadata: Metadata = {
-  title: "Evently",
-  description: "It is a platform for event management",
-  icons:{
-    icon: '/assets/images/logo.svg'
-  }
-};
+import Footer from "@/components/shared/Footer"
+import Header from "@/components/shared/Header"
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: {
+  children: React.ReactNode
+}) {
   return (
     <div className="flex h-screen flex-col">
-    <Header/>
+      <Header />
       <main className="flex-1">{children}</main>
-    <Footer/>
+      <Footer />
     </div>
-  );
+  )
 }
