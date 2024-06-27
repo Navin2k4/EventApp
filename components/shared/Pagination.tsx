@@ -32,14 +32,12 @@ type PaginationProps = {
     <div className='flex gap-2'>
         <Button 
             size="lg" 
-            variant="outline"
-            className='w-28'
+            className='w-28 bg-white text-red hover:bg-[#1e1f23] hover:text-white hover:border hover:border-slate-200'
             onClick={()=>onClick('prev')}
             disabled={Number(page) <=1 }>Previous</Button>
         <Button 
             size="lg" 
-            variant="outline"
-            className='w-28'
+            className='w-28 bg-white text-red hover:bg-[#1e1f23] hover:text-white hover:border hover:border-slate-200'
             onClick={()=>onClick('next')}
             disabled={Number(page) >=totalPages }>Next</Button>
     </div>

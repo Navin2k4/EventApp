@@ -1,5 +1,6 @@
 import Collection from '@/components/shared/Collection'
 import { Button } from '@/components/ui/button'
+import { Separator } from '@/components/ui/separator'
 import { getEventsByUser } from '@/lib/actions/event.action'
 import { getOrdersByUser } from '@/lib/actions/order.action'
 import { IOrder } from '@/lib/database/models/order.model'
@@ -24,12 +25,12 @@ const ProfilePage = async ({searchParams}:SearchParamProps) => {
 
   const organizedEvents = await getEventsByUser({userId,page:ordersPage});
   return (
-    <div className='bg-[#c8c8c8]'>
+    <div className='bg-[#1e1f23]'>
     {/* My Tickets */}
-    <section className='bg-[#c8c8c8] bg-dotted-pattern bg-cover bg-center py-5 md:py-10'>
+    <section className='bg-[#1e1f23] bg-dotted-pattern bg-cover bg-center py-5 md:py-10'>
       <div className='wrapper flex items-center justify-center sm:justify-between'>
-        <h3 className='h3-bold text-center sm:text-left tracking-widest'>My Tickets</h3>
-        <Button asChild size="lg" className='button hidden sm:flex'>
+        <h3 className='h3-bold text-center  text-[#e41312]  sm:text-left tracking-widest overline'>My Tickets</h3>
+        <Button asChild size="lg" className='button hidden bg-primary-500 sm:flex'>
           <Link
             href="/#events"
           >
@@ -39,7 +40,7 @@ const ProfilePage = async ({searchParams}:SearchParamProps) => {
       </div>        
     </section>
     
-  <section className="wrapper ">
+  <section className="wrapper">
    <Collection 
           data={orderedEvents}
           emptyTitle="No Events Tickets Purchased yet"
@@ -53,17 +54,17 @@ const ProfilePage = async ({searchParams}:SearchParamProps) => {
     </section>
 
     {/* Events Organized */}
-    <section className='bg-[#c8c8c8] bg-dotted-pattern bg-cover bg-center py-5 md:py-10'>
-      <div className='wrapper flex items-center justify-center sm:justify-between'>
-        <h3 className='h3-bold text-center sm:text-left tracking-widest'>Events Organized</h3>
-        <Button asChild size="lg" className='button hidden sm:flex'>
+    <section className='bg-[#1e1f23] bg-dotted-pattern bg-cover bg-center py-5 md:py-10'>
+      <div className='wrapper flex  text-[#e41312]  items-center justify-center sm:justify-between'>
+        <h3 className='h3-bold text-center sm:text-left tracking-widest overline'>Events Organized</h3>
+        <Button asChild size="lg" className='button hidden bg-primary-500 sm:flex'>
           <Link
             href="/events/create"
           >
             Create New Events
           </Link>
         </Button>
-      </div>        
+      </div>      
     </section>
      <section className="wrapper">
    <Collection 

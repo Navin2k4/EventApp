@@ -18,12 +18,12 @@ const CheckoutButton = ({event}: {event:IEvent}) => {
         {/* Cannot Buy Past events */}
         {hasEventFinished ? 
         (
-            <p className='p-2 text-red-400'>Tickets are no Longer Available</p>
+            <p className='p-2 font-bold text-red-400'>Tickets are no Longer Available</p>
         ) : 
         (
             <>
             <SignedOut>
-                <Button asChild className='button rounded-full' size="lg">
+                <Button asChild className='bg-[#e41312] hover:bg-[#c00303]' size="lg">
                     <Link href="/sign-in">
                         Get Tickets
                     </Link>    

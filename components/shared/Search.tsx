@@ -32,7 +32,7 @@ const Search = ({placeholder = 'Search Title...'}:{placeholder?:string}) => {
   },[query,searchParams,router]);
 
   return (
-    <div className='flex-center min-h-[54px] w-full overflow-hidden rounded-full bg-gray-50 px-4 py-2'>
+    <div className='flex-center min-h-[54px] w-full overflow-hidden rounded-lg bg-gray-50 px-4 py-2'>
       <Image 
         src='/assets/icons/search.svg'
         alt='search'

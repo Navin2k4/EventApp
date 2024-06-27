@@ -147,3 +147,12 @@ export type CreateUserParams = {
     params: { id: string }
     searchParams: { [key: string]: string | string[] | undefined }
   }
+
+  export interface Order {
+    _id: string;
+    eventTitle: string;
+    buyer: string;
+    buyerMail: string;
+    createdAt: string; // Consider using Date type if applicable
+    totalAmount: number;
+  }

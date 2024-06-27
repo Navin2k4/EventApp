@@ -13,7 +13,7 @@ const Header = () => {
         <Link href="/" className="w-36">
             <Image 
                 src="/assets/images/logo.png" 
-                width={128} 
+                width={110} 
                 height={38} 
                 alt="Evently Logo"
             />
@@ -29,7 +29,7 @@ const Header = () => {
                 <MobileNav />
             </SignedIn>
             <SignedOut>
-                <Button asChild className="rounded-full bg-white text-black size-lg">
+                <Button asChild className="rounded-lg bg-[#e41312] hover:bg-[#c00303]text-white size-lg">
                     <Link href="/sign-in">Login</Link>
                 </Button>
             </SignedOut>
