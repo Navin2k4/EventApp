@@ -24,11 +24,11 @@ const ProfilePage = async ({searchParams}:SearchParamProps) => {
 
   const organizedEvents = await getEventsByUser({userId,page:ordersPage});
   return (
-    <>
+    <div className='bg-[#c8c8c8]'>
     {/* My Tickets */}
-    <section className='bg-primary-50 bg-dotted-pattern bg-cover bg-center py-5 md:py-10'>
+    <section className='bg-[#c8c8c8] bg-dotted-pattern bg-cover bg-center py-5 md:py-10'>
       <div className='wrapper flex items-center justify-center sm:justify-between'>
-        <h3 className='h3-bold text-center sm:text-left'>My Tickets</h3>
+        <h3 className='h3-bold text-center sm:text-left tracking-widest'>My Tickets</h3>
         <Button asChild size="lg" className='button hidden sm:flex'>
           <Link
             href="/#events"
@@ -39,7 +39,7 @@ const ProfilePage = async ({searchParams}:SearchParamProps) => {
       </div>        
     </section>
     
-  <section className="wrapper my-8">
+  <section className="wrapper ">
    <Collection 
           data={orderedEvents}
           emptyTitle="No Events Tickets Purchased yet"
@@ -53,9 +53,9 @@ const ProfilePage = async ({searchParams}:SearchParamProps) => {
     </section>
 
     {/* Events Organized */}
-    <section className='bg-primary-50 bg-dotted-pattern bg-cover bg-center py-5 md:py-10'>
+    <section className='bg-[#c8c8c8] bg-dotted-pattern bg-cover bg-center py-5 md:py-10'>
       <div className='wrapper flex items-center justify-center sm:justify-between'>
-        <h3 className='h3-bold text-center sm:text-left'>Events Organized</h3>
+        <h3 className='h3-bold text-center sm:text-left tracking-widest'>Events Organized</h3>
         <Button asChild size="lg" className='button hidden sm:flex'>
           <Link
             href="/events/create"
@@ -65,7 +65,7 @@ const ProfilePage = async ({searchParams}:SearchParamProps) => {
         </Button>
       </div>        
     </section>
-     <section className="wrapper my-8">
+     <section className="wrapper">
    <Collection 
           data={organizedEvents?.data}
           emptyTitle="No Events have been created yet"
@@ -77,9 +77,7 @@ const ProfilePage = async ({searchParams}:SearchParamProps) => {
           totalPages={organizedEvents?.totalPages}
         />
     </section>
-
-
-    </>
+    </div>
   )
 }
 

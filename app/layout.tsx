@@ -10,7 +10,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Evently",
+  title: "TURF Event Horizon",
   description: "It is a platform for event management",
   icons:{
     icon: '/assets/images/logo.svg'
@@ -24,7 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-    <html lang="en">
+    <html lang="en" className='scroll-smooth' style={{scrollBehavior:'smooth'}}>
       <body className={poppins.variable}>{children}</body>
     </html>
     </ClerkProvider>

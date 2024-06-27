@@ -8,36 +8,35 @@ import MobileNav from './MobileNav'
 
 const Header = () => {
   return (
-    <header className='w-full border-b'>
-        <div className='wrapper flex items-center justify-between'>
-            <Link href="/" className='w-36'>
-                <Image 
-                    src="/assets/images/logo.svg" 
-                    width={128} 
-                    height={38} 
-                    alt='Evently Logo'/>
-            </Link>
+<header className="bg-[#1e1f23] text-white border-b border-gray-800">
+    <div className="wrapper flex items-center justify-between py-4">
+        <Link href="/" className="w-36">
+            <Image 
+                src="/assets/images/logo.png" 
+                width={128} 
+                height={38} 
+                alt="Evently Logo"
+            />
+        </Link>
+        <SignedIn>
+            <nav className="md:flex-between hidden w-full max-w-xs">
+                <NavItems />
+            </nav>
+        </SignedIn>
+        <div className="flex items-center gap-3">
             <SignedIn>
-              <nav className='md:flex-between hidden w-full max-w-xs'>
-                <NavItems />  
-              </nav>
+                <UserButton afterSignOutUrl="/" />
+                <MobileNav />
             </SignedIn>
-
-            <div className='flex w-32 justify-end gap-3'>
-                <SignedIn>
-                  <UserButton afterSignOutUrl='/' />
-                  <MobileNav />  
-                </SignedIn>
-                <SignedOut>
-                  <Button asChild className='rounded-full size-lg'>
-                    <Link href='/sign-in'>
-                      Login
-                    </Link>
-                  </Button>
-                </SignedOut>
-            </div>
+            <SignedOut>
+                <Button asChild className="rounded-full bg-white text-black size-lg">
+                    <Link href="/sign-in">Login</Link>
+                </Button>
+            </SignedOut>
         </div>
-    </header>
+    </div>
+</header>
+
   )
 }
 

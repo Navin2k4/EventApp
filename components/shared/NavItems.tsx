@@ -14,9 +14,19 @@ const NavItems = () => {
                 <li
                     key={link.route}
                     className={`${
-                        isActive && 'text-primary-500'
-                    } flex-center p-medium-16 whitespace-nowrap` }
-                >
+                        isActive ? 'bg-gradient-to-r from-red-400 via-red-500 to-red-400 text-transparent bg-clip-text underline-active' : 'text-white'
+                    } flex-center p-medium-16 whitespace-nowrap relative`}>                 
+                      <style jsx>{`
+        .underline-active::after {
+          content: '';
+          position: absolute;
+          left: 0;
+          bottom: -2px; /* Adjust as needed */
+          width: 100%;
+          height: 2px; /* Adjust as needed */
+          background: linear-gradient(to right, #fc8181, #f56565, #fc8181); /* Red gradient */
+        }
+      `}</style>
                     <Link href={link.route}>{link.label}</Link>
                 </li>
             )
