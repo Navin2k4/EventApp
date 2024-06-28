@@ -2,6 +2,7 @@ import CategoryFilter from "@/components/shared/CategoryFilter";
 import Collection from "@/components/shared/Collection";
 import { GlareCardDemo } from "@/components/shared/GlareCardDemo";
 import Search from "@/components/shared/Search";
+import { StickyScrollRevealDemo } from "@/components/shared/StickyScrollRevealDemo";
 import { Button } from "@/components/ui/button";
 import { featureCards } from "@/constants";
 import { getAllEvents } from "@/lib/actions/event.action";
@@ -24,9 +25,9 @@ export default async function Home({ searchParams }: SearchParamProps) {
 
   return (
     <div className=" bg-[#1e1f23]">
-      <section className="bg-[#1e1f23] bg-dotted-pattern bg-contain min-h-screen pb-20 ">
-        <div className="wrapper grid grid-cols-1 gap-5 md:grid-cols-2 2xl:gap-0">
-          <div className="flex flex-col justify-center gap-8">
+      <section className="bg-[#1e1f23] bg-dotted-pattern bg-contain min-h-screen pb-20 sm:pb-40">
+        <div className="wrapper grid grid-cols-1 gap-5 md:grid-cols-2 2xl:gap-4">
+          <div className="flex flex-col justify-center gap-8 2xl:mt-40">
             <h1 className="h1-bold text-white">
               Discover, Engage, Thrive:{" "}
               <span className="text-[#f73835]">TURF</span> Events Await!
@@ -39,7 +40,7 @@ export default async function Home({ searchParams }: SearchParamProps) {
               <Button
                 size="lg"
                 asChild
-                className="w-full bg-[#e41312] hover:bg-[#c00303] sm:w-fit"
+                className="w-full text-md lg:text-lg bg-[#e41312] hover:bg-[#c00303] sm:w-fit"
               >
                 <Link href="#about">Explore Now</Link>
               </Button>
@@ -48,9 +49,9 @@ export default async function Home({ searchParams }: SearchParamProps) {
               <Button
                 size="lg"
                 asChild
-                className="w-full bg-[#e41312] hover:bg-[#c00303] sm:w-fit"
+                className="w-full text-md lg:text-lg bg-[#e41312] hover:bg-[#c00303] sm:w-fit p-8"
               >
-                <Link href="#events">Book an Event or Create One</Link>
+                <Link href="#events" className="">Book an Event or Create One</Link>
               </Button>
             </SignedIn>
           </div>
@@ -60,7 +61,7 @@ export default async function Home({ searchParams }: SearchParamProps) {
               alt="new image"
               width={1000}
               height={1000}
-              className="absolute top-1 sm:top-0 h-[550px] lg:h-auto"
+              className="absolute top-1 sm:top-0 lg:h-auto"
             />
             <Image
               src="/assets/icons/blob.svg"
@@ -71,6 +72,13 @@ export default async function Home({ searchParams }: SearchParamProps) {
             />
           </div>
         </div>
+      </section>
+      <section  id="provisions" className="wrapper my-5">
+      <h2 className="h2-bold text-center text-white">
+      Comprehensive Turf Care {' '}
+          <span className="text-[#f73835]">Provisions.</span>
+        </h2>
+          <StickyScrollRevealDemo />
       </section>
 
       <section id="about" className="bg-[#1e1f23] p-5 lg:py-10">

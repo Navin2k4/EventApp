@@ -4,10 +4,11 @@ import { getEventById, getRelatedEventsByCategory } from '@/lib/actions/event.ac
 import { formatDateTime } from '@/lib/utils';
 import { SearchParamProps } from '@/types'
 import Image from 'next/image';
+import Link from 'next/link';
 
 const EventDetails = async ({ params: { id }, searchParams }: SearchParamProps) => {
   const event = await getEventById(id);
-
+  
   const relatedEvents = await getRelatedEventsByCategory({
     categoryId: event.category._id,
     eventId: event._id,
@@ -18,6 +19,15 @@ const EventDetails = async ({ params: { id }, searchParams }: SearchParamProps) 
     <div className="bg-[#1e1f23] pb-8">
     <section className="flex justify-center bg-[#44454a]  bg-dotted-pattern bg-contain">
       <div className="grid grid-cols-1 md:grid-cols-2 2xl:max-w-7xl">
+        <div className='relative'>
+        <Link href='' className='absolute right-2 top-2 flex flex-col gap-4 rounded-full bg-white/70 p-4 shadow-lg backdrop-blur-[2px] transition-all hover:bg-white'>
+            <Image
+              src="/assets/icons/share.svg"
+              alt="share"
+              width={20}
+              height={20}
+            />
+          </Link>
         <Image 
           src={event.imageUrl}
           alt="hero image"
@@ -25,6 +35,7 @@ const EventDetails = async ({ params: { id }, searchParams }: SearchParamProps) 
           height={1000}
           className="h-full min-h-[300px] object-cover object-center"
         />
+        </div>
 
         <div className="flex w-full flex-col gap-8 p-5 md:p-10">
           <div className="flex flex-col gap-6">
@@ -32,9 +43,12 @@ const EventDetails = async ({ params: { id }, searchParams }: SearchParamProps) 
 
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
               <div className="flex gap-3">
-                <p className="p-bold-20 rounded-full bg-[#e41312] px-5 py-2 text-red-200">
-                  {event.isFree ? 'FREE' : `Rs.${event.price}`}
+                <div className='flex rounded-full items-center justify-center px-5 bg-[#e41312] '>
+                <p className="p-bold-20  text-white">
+                  {event.isFree ? 'FREE' : `Rs.${event.price} / `}
                 </p>
+                {!event.isFree && (<Image src="/assets/icons/person.svg" alt="person" height={25} width={25} />)}
+                  </div>
                 <p className="p-medium-16 rounded-full bg-primary-500 px-4 py-2.5 text-white">
                   {event.category.name}
                 </p>
@@ -80,7 +94,7 @@ const EventDetails = async ({ params: { id }, searchParams }: SearchParamProps) 
 
     {/* EVENTS with the same category */}
     <section className="wrapper my-8 flex flex-col gap-8 md:gap-12">
-      <h2 className="h2-bold">Related Events</h2>
+      <h2 className="h2-bold text-[#e41312]">Related Events</h2>
 
       <Collection 
           data={relatedEvents?.data}

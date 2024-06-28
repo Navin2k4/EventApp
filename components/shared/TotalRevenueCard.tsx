@@ -24,7 +24,7 @@ const TotalRevenueCard: React.FC<TotalRevenueCardProps> = ({ orders }) => {
 
   // Conditionally render based on whether there are orders or not
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
+    <div className="bg-gray-200 rounded-lg shadow-md p-6">
       {orders.length > 0 ? (
         <>
           <h3 className="text-xl font-semibold mb-4">Total Revenue</h3>

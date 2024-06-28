@@ -8,7 +8,7 @@ export const eventFormSchema = z.object({
   startDateTime: z.date(),
   endDateTime: z.date(),
   categoryId: z.string().min(1, "Category is required"),
-  price: z.string().regex(/^\d+(\.\d{1,2})?$/, "Invalid price format"),
+  price: z.string(),
   isFree: z.boolean(),
   url: z.string().url("Invalid URL format"),
 }).refine(data => data.endDateTime >= data.startDateTime, {

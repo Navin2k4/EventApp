@@ -120,7 +120,7 @@ export function DataTableDemo({ data }: DataTableDemoProps) {
   });
 
   return (
-    <div className="w-full px-3 bg-white rounded-lg">
+    <div className="w-full p-3 bg-gray-200 rounded-lg">
       <div className="flex items-center py-4">
         {/* <Input
           placeholder="Filter by email..."
@@ -146,7 +146,7 @@ export function DataTableDemo({ data }: DataTableDemoProps) {
                 return (
                   <DropdownMenuCheckboxItem
                     key={column.id}
-                    className="capitalize"
+                    className="capitalize text-black"
                     checked={column.getIsVisible()}
                     onCheckedChange={(value) =>
                       column.toggleVisibility(!!value)
@@ -166,7 +166,7 @@ export function DataTableDemo({ data }: DataTableDemoProps) {
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead key={header.id} className="text-black">
                       {header.isPlaceholder
                         ? null
                         : flexRender(
