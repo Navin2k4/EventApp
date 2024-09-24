@@ -1,4 +1,6 @@
 // ====== USER PARAMS
+
+// Changes made
 export type CreateUserParams = {
     clerkId: string
     firstName: string
@@ -113,7 +115,7 @@ export type CreateUserParams = {
   }
   
   export type CreateOrderParams = {
-    paymentGateWayId: string
+    stripeId: string
     eventId: string
     buyerId: string
     totalAmount: string
