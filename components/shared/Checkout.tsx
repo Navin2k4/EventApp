@@ -27,7 +27,7 @@ const Checkout = ({ event, userId }: { event: IEvent, userId: string }) => {
 
       // Configure Razorpay payment options
       const options = {
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!, // Replace with your Razorpay key
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!, // Use NEXT_PUBLIC_ for frontend env variable
         amount: Number(event.price) * 100, // Razorpay expects the amount in paise
         currency: 'INR',
         name: event.title,
