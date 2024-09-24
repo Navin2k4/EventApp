@@ -11,8 +11,8 @@ declare global {
 
 const Checkout = ({ event, userId }: { event: IEvent, userId: string }) => {
   const onCheckout = async (e: React.FormEvent) => {
-    e.preventDefault(); // Prevent default form submission
-
+    e.preventDefault();
+  
     const order = {
       eventTitle: event.title,
       eventId: event._id,
@@ -20,39 +20,35 @@ const Checkout = ({ event, userId }: { event: IEvent, userId: string }) => {
       isFree: event.isFree,
       buyerId: userId,
     };
-
+  
     try {
-      // Call your backend to create an order and get the Razorpay order ID
+      // Fetch Razorpay order ID from backend
       const razorpayOrderId = await checkoutOrder(order);
-
-      // Configure Razorpay payment options
+  
+      // Initialize Razorpay with key_id from env variable
       const options = {
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!, // Use NEXT_PUBLIC_ for frontend env variable
-        amount: Number(event.price) * 100, // Razorpay expects the amount in paise
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!, // Ensure this is set properly
+        amount: Number(event.price) * 100,
         currency: 'INR',
-        name: event.title,
-        description: 'Event Ticket Purchase',
-        order_id: razorpayOrderId, // The Razorpay order ID returned from the backend
+        order_id: razorpayOrderId, // Order ID returned from the backend
         handler: function (response: any) {
           console.log('Payment successful', response);
-          // Handle success (redirect or show a success message)
         },
         prefill: {
-          email: 'user@example.com', // Prefill user email (optional)
+          email: 'user@example.com',
         },
         theme: {
           color: '#1ab964',
         },
       };
-
-      // Initialize Razorpay and open the payment modal
+  
       const razorpay = new window.Razorpay(options);
       razorpay.open();
     } catch (error) {
-      console.error('Error during checkout:', error);
+      console.error('Checkout error:', error);
     }
   };
-
+  
   return (
     <form onSubmit={onCheckout}>
       <Button type="submit" role="link" size="lg" className="bg-[#1ab964] hover:bg-[#18a258] sm:w-fit">

@@ -25,58 +25,48 @@ export default async function Home({ searchParams }: SearchParamProps) {
 
   return (
     <div className=" bg-[#1e1f23]">
-      <section className="bg-[#1e1f23] bg-dotted-pattern bg-contain min-h-screen pb-20 sm:pb-40">
-        <div className="wrapper grid grid-cols-1 gap-5 md:grid-cols-2 2xl:gap-4">
-          <div className="flex flex-col justify-center gap-8 2xl:mt-40">
-            <h1 className="h1-bold text-white">
-              Discover, Engage, Thrive:{" "}
-              <span className="text-[#f73835]">TURF</span> Events Await!
-            </h1>
-            <p className="p-regular-20 md:p-regular-24 text-white">
-              Explore and celebrate unforgettable experiences at TURF's premier
-              events.
-            </p>
-            <SignedOut>
-              <Button
-                size="lg"
-                asChild
-                className="w-full text-md lg:text-lg bg-[#e41312] hover:bg-[#c00303] sm:w-fit"
-              >
-                <Link href="#about">Explore Now</Link>
-              </Button>
-            </SignedOut>
-            <SignedIn>
-              <Button
-                size="lg"
-                asChild
-                className="w-full text-md lg:text-lg bg-[#e41312] hover:bg-[#c00303] sm:w-fit p-8"
-              >
-                <Link href="#events" className="">Book an Event or Create One</Link>
-              </Button>
-            </SignedIn>
-          </div>
-          <div className="relative flex justify-center items-center">
-            <Image
-              src="/assets/images/hero3.png"
-              alt="new image"
-              width={1000}
-              height={1000}
-              className="absolute top-1 sm:top-0 lg:h-auto"
-            />
-            <Image
-              src="/assets/icons/blob.svg"
-              alt="hero"
-              width={1000}
-              height={1000}
-              className="max-h-[80vh] object-contain object-center 2xl:max-h-[50vh] rounded-lg"
-            />
-          </div>
-        </div>
-      </section>
+      <section className="relative bg-[#1e1f23] bg-dotted-pattern bg-contain min-h-screen pb-20 sm:pb-40 flex items-center justify-center">
+      <div className="absolute inset-0 z-0">
+        <Image
+          src="/assets/images/bg1.jpg"
+          alt="Background"
+          layout="fill"
+          objectFit="cover"
+          quality={100}
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/50" />
+      </div>
+      
+      <div className="wrapper relative z-10 flex flex-col items-center text-center max-w-4xl mx-auto px-4">
+        <h1 className="h1-bold text-white mb-6">
+          Connect, Participate, Excel, Campus Events Await!
+        </h1>
+        <p className="p-regular-20 sm:p-regular-24 text-white mb-8">
+          Discover and engage in the vibrant college community by joining exciting campus events. Be a part of unforgettable experiences that foster growth and connection.
+        </p>
+        <SignedOut>
+          <Button
+            size="lg"
+            asChild
+            className="w-full text-md lg:text-lg bg-[#e41312] hover:bg-[#c00303] sm:w-fit"
+          >
+            <Link href="#about">Explore Now</Link>
+          </Button>
+        </SignedOut>
+        <SignedIn>
+          <Button
+            size="lg"
+            asChild
+            className="w-full text-md lg:text-lg bg-[#e41312] hover:bg-[#c00303] sm:w-fit p-8"
+          >
+            <Link href="#events">Book an Event or Create One</Link>
+          </Button>
+        </SignedIn>
+      </div>
+    </section>
       <section  id="provisions" className="wrapper my-5">
       <h2 className="h2-bold text-center text-white">
-      Comprehensive Turf Care {' '}
-          <span className="text-[#f73835]">Provisions.</span>
+      Cultivating Connections Through Every Event!{' '}
         </h2>
           <StickyScrollRevealDemo />
       </section>
@@ -95,29 +85,38 @@ export default async function Home({ searchParams }: SearchParamProps) {
       </section>
 
       <section
-        id="events"
-        className="wrapper mt-8 flex flex-col gap-8 md:gap-12"
-      >
-        <h2 className="h2-bold text-white">
-          Discover a world of <br /> exciting{" "}
-          <span className="text-[#f73835]">events.</span>
+      id="events"
+      className="wrapper mt-16 flex flex-col gap-8 md:gap-12 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 py-16 px-4 sm:px-6 lg:px-8 rounded-3xl shadow-2xl"
+    >
+      <div className="text-center">
+        <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 leading-tight">
+          Discover a world of <br className="hidden sm:inline" />
+          exciting <span className="text-[#f73835] animate-pulse">events.</span>
         </h2>
+        <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+          Explore and join amazing experiences happening around you.
+        </p>
+      </div>
 
-        <div className="flex w-full flex-col gap-5 md:flex-row">
+      <div className="flex w-full flex-col gap-5 md:flex-row justify-center items-center">
+        <div className="w-full md:w-1/3">
           <CategoryFilter />
-          <Search placeholder="Search" />
         </div>
+        <div className="w-full md:w-2/3">
+          <Search placeholder="Search for events" />
+        </div>
+      </div>
 
-        <Collection
-          data={events?.data}
-          emptyTitle="No Events Found"
-          emptyStateSubtext="Come back later"
-          collectionType="All_Events"
-          limit={6}
-          page={page}
-          totalPages={events?.totalPages}
-        />
-      </section>
+      <Collection
+        data={events?.data}
+        emptyTitle="No Events Found"
+        emptyStateSubtext="Come back later for exciting new events!"
+        collectionType="All_Events"
+        limit={6}
+        page={page}
+        totalPages={events?.totalPages}
+      />
+    </section>
     </div>
   );
 }
