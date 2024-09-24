@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { eventFormSchema } from "@/lib/validator";
 import { z } from "zod";
 import "react-datepicker/dist/react-datepicker.css";
-
 import DatePicker from "react-datepicker";
 import { Button } from "@/components/ui/button";
 import {
@@ -25,32 +24,31 @@ import { FileUploader } from "./FileUploader";
 import { useState } from "react";
 import Image from "next/image";
 import { Checkbox } from "../ui/checkbox";
-import {useUploadThing} from '@/lib/uploadthing';
+import { useUploadThing } from "@/lib/uploadthing";
 import { useRouter } from "next/navigation";
 import { createEvent, updateEvent } from "@/lib/actions/event.action";
 import { IEvent } from "@/lib/database/models/event.model";
 
 type EventFormProps = {
-  userId: string
-  type: "Create" | "Update"
-  event?: IEvent,
-  eventId?: string
-}
-
+  userId: string;
+  type: "Create" | "Update";
+  event?: IEvent;
+  eventId?: string;
+};
 
 const EventForm = ({ userId, type, event, eventId }: EventFormProps) => {
   const [files, setFiles] = useState<File[]>([]);
-  
-  const initialValues = event && type === 'Update' 
-    ? { 
-      ...event, 
-      startDateTime: new Date(event.startDateTime), 
-      endDateTime: new Date(event.endDateTime) 
-    }
-    : eventDefaultValues;
 
+  const initialValues =
+    event && type === "Update"
+      ? {
+          ...event,
+          startDateTime: new Date(event.startDateTime),
+          endDateTime: new Date(event.endDateTime),
+        }
+      : eventDefaultValues;
 
-  const {startUpload} = useUploadThing('imageUploader');
+  const { startUpload } = useUploadThing("imageUploader");
   const router = useRouter();
 
   const form = useForm<z.infer<typeof eventFormSchema>>({
@@ -59,35 +57,33 @@ const EventForm = ({ userId, type, event, eventId }: EventFormProps) => {
   });
 
   async function onSubmit(values: z.infer<typeof eventFormSchema>) {
-    
     let uploadedImageUrl = values.imageUrl;
-    if(files.length > 0){
+    if (files.length > 0) {
       const uploadedImages = await startUpload(files);
-      if(!uploadedImages){
+      if (!uploadedImages) {
         return;
       }
       uploadedImageUrl = uploadedImages[0].url;
     }
 
-    if(type === "Create"){
+    if (type === "Create") {
       try {
         const newEvent = await createEvent({
-          event: {...values, imageUrl: uploadedImageUrl},
+          event: { ...values, imageUrl: uploadedImageUrl },
           userId,
-          path:'/profile'
+          path: "/profile",
         });
-        if(newEvent){
+        if (newEvent) {
           form.reset();
           router.push(`/events/${newEvent._id}`);
         }
       } catch (error) {
         console.log(error);
-        
       }
     }
-    if(type === 'Update') {
-      if(!eventId) {
-        router.back()
+    if (type === "Update") {
+      if (!eventId) {
+        router.back();
         return;
       }
 
@@ -95,19 +91,18 @@ const EventForm = ({ userId, type, event, eventId }: EventFormProps) => {
         const updatedEvent = await updateEvent({
           userId,
           event: { ...values, imageUrl: uploadedImageUrl, _id: eventId },
-          path: `/events/${eventId}`
-        })
+          path: `/events/${eventId}`,
+        });
 
-        if(updatedEvent) {
+        if (updatedEvent) {
           form.reset();
-          router.push(`/events/${updatedEvent._id}`)
+          router.push(`/events/${updatedEvent._id}`);
         }
       } catch (error) {
         console.log(error);
       }
     }
   }
-
 
   return (
     <Form {...form}>
@@ -278,60 +273,60 @@ const EventForm = ({ userId, type, event, eventId }: EventFormProps) => {
           />
         </div>
         <div className="flex flex-col gap-5 md:flex-row">
-  {/* Price */}
-  <FormField
-    control={form.control}
-    name="price"
-    render={({ field }) => (
-      <FormItem className="w-full">
-        <FormControl>
-          <div className="flex-center h-[54px] w-full overflow-hidden rounded-full bg-grey-50 px-4 py-2">
-            <Image
-              src="/assets/icons/dollar.svg"
-              alt="dollar"
-              width={24}
-              height={24}
-            />
-            <Input
-              type="number"
-              placeholder="Price per person"
-              {...field}
-              className="p-regular-16 border-0 bg-grey-50 outline-offset-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
-              disabled={form.watch("isFree")}
-            />
-            {/* Is Free Selection Box */}
-            <FormField
-              control={form.control}
-              name="isFree"
-              render={({ field: isFreeField }) => (
-                <FormItem>
-                  <FormControl>
-                    <div className="flex items-center">
-                      <label
-                        htmlFor="isFree"
-                        className="whitespace-nowrap pr-3 leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                      >
-                        Free Ticket
-                      </label>
-                      <Checkbox
-                        onCheckedChange={isFreeField.onChange}
-                        checked={isFreeField.value}
-                        id="isFree"
-                        className="mr-2 border-2 border-primary-500"
-                      />
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-        </FormControl>
-        <FormMessage />
-      </FormItem>
-    )}
-  />
-</div>
+          {/* Price */}
+          <FormField
+            control={form.control}
+            name="price"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormControl>
+                  <div className="flex-center h-[54px] w-full overflow-hidden rounded-full bg-grey-50 px-4 py-2">
+                    <Image
+                      src="/assets/icons/dollar.svg"
+                      alt="dollar"
+                      width={24}
+                      height={24}
+                    />
+                    <Input
+                      type="number"
+                      placeholder="Price per person"
+                      {...field}
+                      className="p-regular-16 border-0 bg-grey-50 outline-offset-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+                      disabled={form.watch("isFree")}
+                    />
+                    {/* Is Free Selection Box */}
+                    <FormField
+                      control={form.control}
+                      name="isFree"
+                      render={({ field: isFreeField }) => (
+                        <FormItem>
+                          <FormControl>
+                            <div className="flex items-center">
+                              <label
+                                htmlFor="isFree"
+                                className="whitespace-nowrap pr-3 leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                              >
+                                Free Ticket
+                              </label>
+                              <Checkbox
+                                onCheckedChange={isFreeField.onChange}
+                                checked={isFreeField.value}
+                                id="isFree"
+                                className="mr-2 border-2 border-primary-500"
+                              />
+                            </div>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
 
         {/* URL */}
         <FormField

@@ -10,7 +10,7 @@ const Header = () => {
   return (
 <header className="bg-[#1e1f23] text-white border-b border-gray-800">
     <div className="wrapper flex items-center justify-between py-4">
-        <Link href="/" className="w-36">
+        <Link href="/" className="w-36 ">
             <Image 
                 src="/assets/images/logo.png" 
                 width={110} 

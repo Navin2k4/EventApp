@@ -24,7 +24,7 @@ export async function POST(request: Request) {
     const { id, amount_total, metadata } = event.data.object
 
     const order = {
-      paymentGateWayId: id,
+      stripeId: id,
       eventId: metadata?.eventId || '',
       buyerId: metadata?.buyerId || '',
       totalAmount: amount_total ? (amount_total / 100).toString() : '0',

@@ -86,7 +86,7 @@ export default async function Home({ searchParams }: SearchParamProps) {
 
       <section
       id="events"
-      className="wrapper mt-16 flex flex-col gap-8 md:gap-12 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 py-16 px-4 sm:px-6 lg:px-8 rounded-3xl shadow-2xl"
+      className="wrapper mt-10 flex flex-col gap-8 md:gap-12 bg-gradient-to-br  px-4 sm:px-6 lg:px-8 rounded-3xl shadow-2xl"
     >
       <div className="text-center">
         <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 leading-tight">
