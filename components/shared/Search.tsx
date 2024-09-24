@@ -12,6 +12,7 @@ const Search = ({placeholder = 'Search Title...'}:{placeholder?:string}) => {
   const searchParams = useSearchParams();
   const router = useRouter();
   let newUrl ='';
+  
   useEffect(()=>{
     const delayDebounceFn = setTimeout(() => {
       if(query){
