@@ -1,39 +1,37 @@
-import stripe from 'stripe'
-import { NextResponse } from 'next/server'
-import { createOrder } from '@/lib/actions/order.action'
+import { NextResponse } from 'next/server';
+import crypto from 'crypto';
+import { createOrder } from '@/lib/actions/order.action';
 
 export async function POST(request: Request) {
-  const body = await request.text()
+  const body = await request.text();
+  const razorpaySignature = request.headers.get('x-razorpay-signature') as string;
+  const secret = process.env.RAZORPAY_WEBHOOK_SECRET!;
+  
+  const generatedSignature = crypto
+    .createHmac('sha256', secret)
+    .update(body)
+    .digest('hex');
 
-  const sig = request.headers.get('stripe-signature') as string
-  const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET!
-
-  let event
-
-  try {
-    event = stripe.webhooks.constructEvent(body, sig, endpointSecret)
-  } catch (err) {
-    return NextResponse.json({ message: 'Webhook error', error: err })
+  if (generatedSignature !== razorpaySignature) {
+    return NextResponse.json({ message: 'Invalid signature' }, { status: 400 });
   }
 
-  // Get the ID and type
-  const eventType = event.type
+  const event = JSON.parse(body);
 
-  // CREATE
-  if (eventType === 'checkout.session.completed') {
-    const { id, amount_total, metadata } = event.data.object
+  if (event.event === 'payment.captured') {
+    const { payment_id, amount, notes } = event.payload.payment.entity;
 
     const order = {
-      paymentGateWayId: id,
-      eventId: metadata?.eventId || '',
-      buyerId: metadata?.buyerId || '',
-      totalAmount: amount_total ? (amount_total / 100).toString() : '0',
+      paymentGateWayId: payment_id,
+      eventId: notes.eventId,
+      buyerId: notes.buyerId,
+      totalAmount: (amount / 100).toString(),
       createdAt: new Date(),
-    }
+    };
 
-    const newOrder = await createOrder(order)
-    return NextResponse.json({ message: 'OK', order: newOrder })
+    const newOrder = await createOrder(order);
+    return NextResponse.json({ message: 'OK', order: newOrder });
   }
 
-  return new Response('', { status: 200 })
+  return new Response('', { status: 200 });
 }

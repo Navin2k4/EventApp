@@ -9,41 +9,60 @@ import Order from '../database/models/order.model';
 import Event from '../database/models/event.model';
 import {ObjectId} from 'mongodb';
 import User from '../database/models/user.model';
+import Razorpay from 'razorpay';
 
 export const checkoutOrder = async (order: CheckoutOrderParams) => {
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
-  
+  const razorpay = new Razorpay({
+    key_id: process.env.RAZORPAY_KEY_ID!,
+    key_secret: process.env.RAZORPAY_KEY_SECRET!,
+  });
 
   const price = order.isFree ? 0 : Number(order.price) * 100;
 
   try {
-    const session = await stripe.checkout.sessions.create({
-      line_items: [
-        {
-          price_data: {
-            currency: 'inr',
-            unit_amount: price,
-            product_data: {
-              name: order.eventTitle
-            }
-          },
-          quantity: 1
-        },
-      ],
-      metadata: {
+    // Create Razorpay order
+    const paymentOrder = await razorpay.orders.create({
+      amount: price,
+      currency: 'INR',
+      receipt: order.eventId,
+      notes: {
         eventId: order.eventId,
         buyerId: order.buyerId,
       },
-      mode: 'payment',
-      success_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/profile`,
-      cancel_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/`,
     });
 
-    redirect(session.url!)
+    // Redirect to Razorpay's frontend checkout
+    if (typeof window !== 'undefined') {
+      const options = {
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
+        amount: paymentOrder.amount,
+        currency: paymentOrder.currency,
+        name: order.eventTitle,
+        description: 'Event Ticket',
+        order_id: paymentOrder.id,
+        handler: function (response: any) {
+          console.log(response);
+          // Handle successful payment
+          window.location.href = `${process.env.NEXT_PUBLIC_SERVER_URL}/profile`;
+        },
+        prefill: {
+          email: 'buyer@example.com', // Replace with buyer email
+          contact: '9999999999', // Replace with buyer contact number
+        },
+        theme: {
+          color: '#3399cc',
+        },
+      };
+
+      const rzp = new (window as any).Razorpay(options);
+      rzp.open();
+    }
   } catch (error) {
+    console.error('Payment initiation failed', error);
     throw error;
   }
-}
+};
+
 
 export const createOrder = async (order: CreateOrderParams) => {
   try {
