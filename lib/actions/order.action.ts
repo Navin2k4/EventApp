@@ -13,8 +13,8 @@ import Razorpay from 'razorpay';
 
 export const checkoutOrder = async (order: CheckoutOrderParams) => {
   const razorpay = new Razorpay({
-    key_id: process.env.RAZORPAY_KEY_ID!,  // Make sure key_id is correctly set here
-    key_secret: process.env.RAZORPAY_KEY_SECRET!,
+    key_id: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!, 
+    key_secret: process.env.RAZORPAY_KEY_SECRET,
   });
 
   const price = order.isFree ? 0 : Number(order.price) * 100;
