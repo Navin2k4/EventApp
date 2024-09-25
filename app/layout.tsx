@@ -24,7 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-    <html lang="en" className='scroll-smooth' style={{scrollBehavior:'smooth'}}>
+    <html lang="en" className='scroll-smooth' style={{scrollBehavior:'smooth'}} suppressHydrationWarning>
       <body className={poppins.variable}>{children}</body>
     </html>
     </ClerkProvider>
