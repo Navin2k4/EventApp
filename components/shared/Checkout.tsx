@@ -65,7 +65,7 @@ const Checkout = ({ event, userId }: { event: IEvent, userId: string }) => {
           contact: '9999999999',
         },
         theme: {
-          color: '#3db8ef',
+          color: '#b00403',
         },
         method: {
           upi: true,
