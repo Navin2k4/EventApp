@@ -10,7 +10,8 @@ const Orders = async ({ searchParams }: SearchParamProps) => {
   const searchText = (searchParams?.query as string) || ''
 
   const orders = await getOrdersByEvent({ eventId, searchString: searchText })
-
+  console.log(orders);
+  
   return (
     <div className='bg-[#1e1f23]'>
       <section className=" bg-[#1e1f23] bg-dotted-pattern bg-cover bg-center py-3 md:py-6">

@@ -15,33 +15,45 @@ export const checkoutOrder = async (order: CheckoutOrderParams) => {
     key_secret: process.env.RAZORPAY_KEY_SECRET!,
   });
 
-  const price = order.isFree ? 0 : Number(order.price) * 100;
+  const price = order.isFree ? 0 : Number(order.price) * 100; // Convert to smallest currency unit (e.g., paise for INR)
 
   try {
     // Create Razorpay order
     const options = {
       amount: price,
       currency: 'INR',
-      receipt: `${order.eventId}`,
+      receipt: `receipt_order_${order.eventId}`, // Generate a unique receipt ID
       notes: {
         eventId: order.eventId,
         buyerId: order.buyerId,
-      },
+      }
     };
 
     const razorpayOrder = await razorpay.orders.create(options);
+    
+    // Create the order in the database
+    const newOrderData: CreateOrderParams = {
+      paymentId: razorpayOrder.id, // Assuming you want to store the Razorpay order ID here
+      eventId: order.eventId,
+      buyerId: order.buyerId,
+      totalAmount: String(razorpayOrder.amount), // Store the total amount as a string
+      createdAt: new Date(), // Set the current date as createdAt
+    };
 
+    const newOrder = await createOrder(newOrderData); // Save the order to the database
+
+    // Return necessary details to frontend
     return {
       orderId: razorpayOrder.id,
       amount: razorpayOrder.amount,
       currency: razorpayOrder.currency,
-      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // Public key for client-side
     };
   } catch (error) {
-    console.error('Error in checkout order:', error);
-    throw new Error('Checkout order failed');
+    throw error;
   }
 };
+
 
 
 export const createOrder = async (order: CreateOrderParams) => {
@@ -66,10 +78,10 @@ export const createOrder = async (order: CreateOrderParams) => {
 // GET ORDERS BY EVENT
 export async function getOrdersByEvent({ searchString, eventId }: GetOrdersByEventParams) {
   try {
-    await connectToDatabase()
+    await connectToDatabase();
 
-    if (!eventId) throw new Error('Event ID is required')
-    const eventObjectId = new ObjectId(eventId)
+    if (!eventId) throw new Error('Event ID is required');
+    const eventObjectId = new ObjectId(eventId);
 
     const orders = await Order.aggregate([
       {
@@ -99,33 +111,37 @@ export async function getOrdersByEvent({ searchString, eventId }: GetOrdersByEve
           _id: 1,
           totalAmount: 1,
           createdAt: 1,
+          paymentId: 1,  // Include paymentId in the projection
           eventTitle: '$event.title',
           eventId: '$event._id',
           buyer: {
             $concat: ['$buyer.firstName', ' ', '$buyer.lastName'],
           },
           buyerId: '$buyer._id',
-          buyerMail: '$buyer.email'
+          buyerMail: '$buyer.email',
         },
       },
       {
         $match: {
           $and: [
             { eventId: eventObjectId },
-            { $or: [
-              { 'buyer': { $regex: RegExp(searchString, 'i') } },
-              { 'buyerMail': { $regex: RegExp(searchString, 'i') } }
-            ]}
+            {
+              $or: [
+                { buyer: { $regex: RegExp(searchString, 'i') } },
+                { buyerMail: { $regex: RegExp(searchString, 'i') } },
+              ],
+            },
           ],
         },
       },
-    ])
+    ]);
 
-    return JSON.parse(JSON.stringify(orders))
+    return JSON.parse(JSON.stringify(orders));
   } catch (error) {
-    handleError(error)
+    handleError(error);
   }
 }
+
 
 // GET ORDERS BY USER
 export async function getOrdersByUser({ userId, limit = 3, page }: GetOrdersByUserParams) {
