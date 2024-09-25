@@ -1,52 +1,51 @@
 "use server"
 
-import Stripe from 'stripe';
 import { CheckoutOrderParams, CreateOrderParams, GetOrdersByEventParams, GetOrdersByUserParams } from "@/types"
-import { redirect } from 'next/navigation';
 import { handleError } from '../utils';
 import { connectToDatabase } from '../database';
 import Order from '../database/models/order.model';
 import Event from '../database/models/event.model';
 import {ObjectId} from 'mongodb';
 import User from '../database/models/user.model';
+import Razorpay from 'razorpay';
 
 export const checkoutOrder = async (order: CheckoutOrderParams) => {
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
-  
+  const razorpay = new Razorpay({
+    key_id: process.env.RAZORPAY_KEY_ID!,
+    key_secret: process.env.RAZORPAY_KEY_SECRET!,
+  });
 
   const price = order.isFree ? 0 : Number(order.price) * 100;
 
   try {
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types:['card'],
-      line_items: [
-                {
-          price_data: {
-            currency: 'inr',
-            unit_amount: price,
-            product_data: {
-              name: order.eventTitle
-            }
-          },
-          quantity: 1
-        },
-      ],
-      metadata: {
+    // Create Razorpay order
+    const options = {
+      amount: price,
+      currency: 'INR',
+      receipt: `${order.eventId}`,
+      notes: {
         eventId: order.eventId,
         buyerId: order.buyerId,
       },
-      mode: 'payment',
-      success_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/profile`,
-      cancel_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/`,
-    });
+    };
 
-    redirect(session.url!)
+    const razorpayOrder = await razorpay.orders.create(options);
+
+    return {
+      orderId: razorpayOrder.id,
+      amount: razorpayOrder.amount,
+      currency: razorpayOrder.currency,
+      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+    };
   } catch (error) {
-    throw error;
+    console.error('Error in checkout order:', error);
+    throw new Error('Checkout order failed');
   }
-}
+};
+
 
 export const createOrder = async (order: CreateOrderParams) => {
+  console.log("Entering into the Create order function")
   try {
     await connectToDatabase();
     
@@ -55,6 +54,8 @@ export const createOrder = async (order: CreateOrderParams) => {
       event: order.eventId,
       buyer: order.buyerId,
     });
+    console.log(newOrder);
+    
 
     return JSON.parse(JSON.stringify(newOrder));
   } catch (error) {
