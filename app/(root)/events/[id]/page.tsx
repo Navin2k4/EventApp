@@ -26,6 +26,7 @@ import {
   Clock,
   ExternalLink,
 } from "lucide-react";
+import CopyLinkButton from "@/components/shared/CopyLinkButton";
 
 const EventDetails = async ({
   params: { id },
@@ -39,40 +40,41 @@ const EventDetails = async ({
     page: searchParams.page as string,
   });
 
+
   return (
-    <div className=" bg-black">
-      <section className="w-full bg-gradient-to-b pt-24 pb-12">
+    <div className=" bg-black pb-24">
+      <section className="w-full bg-gradient-to-b pt-24 py-12">
         <div className="container mx-auto px-4">
           <Card className=" overflow-hidden  border-none">
             <div className="flex flex-col lg:flex-row">
-              <div className="relative w-full lg:w-1/2 h-64 lg:h-auto">
+              <div className="relative w-full lg:w-1/2 h-64 lg:h-auto shadow-xl">
                 <Image
                   src={event.imageUrl}
                   alt={event.title}
                   layout="fill"
                   objectFit="cover"
                 />
-                <Button
-                  size="icon"
-                  variant="secondary"
-                  className="absolute top-4 right-4 bg-white/80 hover:bg-white"
-                >
-                  <Share2 className="h-4 w-4 text-gray-800" />
-                </Button>
+                <CopyLinkButton eventId={event._id} />
               </div>
 
               <CardContent className="w-full lg:w-1/2 p-6 lg:p-10 bg-gray-300">
                 <CardHeader className="p-0 mb-6">
                   <div className="flex flex-wrap items-center gap-3 mb-4">
                     <Badge
-                      variant={event.isFree ? "secondary" : "destructive"}
-                      className="text-lg py-1 px-3"
+                      variant={
+                        event.isFree || event.price == ""
+                          ? "outline"
+                          : "destructive"
+                      }
+                      className="text-lg py-1 px-3 border-white"
                     >
-                      {event.isFree ? "FREE" : `Rs.${event.price}`}
+                      {event.isFree || event.price == ""
+                        ? "FREE"
+                        : `Rs.${event.price}`}
                     </Badge>
                     <Badge
                       variant="outline"
-                      className="bg-purple-100 text-purple-800 border-purple-300 text-md"
+                      className="bg-purple-100  border-black text-md py-1 px-3"
                     >
                       {event.category.name}
                     </Badge>
@@ -89,16 +91,19 @@ const EventDetails = async ({
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                   <div className="flex items-start gap-3">
-                    <Calendar className="h-5 w-5 text-purple-600 mt-1" />
+                    <Calendar className="h-5 w-5 text-red-600 mt-1" />
                     <div>
                       <p className="font-semibold text-gray-800">Date</p>
                       <p className="text-gray-600">
                         {formatDateTime(event.startDateTime).dateOnly}
                       </p>
+                      <p className="text-gray-600">
+                        {formatDateTime(event.endDateTime).dateOnly}
+                      </p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
-                    <Clock className="h-5 w-5 text-purple-600 mt-1" />
+                    <Clock className="h-5 w-5 text-red-600 mt-1" />
                     <div>
                       <p className="font-semibold text-gray-800">Time</p>
                       <p className="text-gray-600">
@@ -108,7 +113,7 @@ const EventDetails = async ({
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
-                    <MapPin className="h-5 w-5 text-purple-600 mt-1" />
+                    <MapPin className="h-5 w-5 text-red-600 mt-1" />
                     <div>
                       <p className="font-semibold text-gray-800">Location</p>
                       <p className="text-gray-600">{event.location}</p>
@@ -116,7 +121,7 @@ const EventDetails = async ({
                   </div>
                 </div>
 
-                <Separator className="my-6" />
+                {/* <Separator className="my-6 text-black"  /> */}
 
                 <div className="space-y-4 mb-8">
                   <h3 className="text-xl font-semibold text-gray-800">
@@ -127,14 +132,14 @@ const EventDetails = async ({
                   </p>
                   <Link
                     href={event.url}
-                    className="inline-flex items-center text-purple-600 hover:text-purple-800 transition-colors"
+                    className="inline-flex items-center text-red-600 hover:text-purple-800 transition-colors"
                   >
                     <ExternalLink className="h-4 w-4 mr-2" />
                     Event Website
                   </Link>
                 </div>
 
-                  <CheckoutButton event={event} />
+                <CheckoutButton event={event} />
               </CardContent>
             </div>
           </Card>

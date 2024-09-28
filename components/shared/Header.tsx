@@ -8,7 +8,7 @@ import Image from 'next/image'
 
 const Header = () => {
   return (
-    <header className="fixed top-0 left-0 bg-transparent w-full  backdrop-blur-xl z-50 shadow-xl px-2 pt-2">
+    <header className="fixed top-0 left-0 bg-gradient-to-b from-black to-transparent w-full  backdrop-blur-xl z-50 shadow-xl px-2 pt-2">
       <div className="container mx-auto flex items-center justify-between py-4 px-6">
         <Link href="/" className="text-3xl font-extrabold tracking-tight text-white">
           <Image 

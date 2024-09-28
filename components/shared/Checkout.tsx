@@ -30,6 +30,9 @@ const Checkout = ({ event, userId }: { event: IEvent, userId: string }) => {
 
   const onCheckout = async () => {
     
+    const audio = new Audio('/assets/sounds/checkout-click.mp3'); 
+    audio.play();
+
     const currentUser = await getUserById(userId);
     
     const order = {

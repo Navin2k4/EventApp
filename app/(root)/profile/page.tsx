@@ -11,7 +11,6 @@ import React from "react";
 
 const ProfilePage = async ({ searchParams }: SearchParamProps) => {
   const { sessionClaims } = auth();
-  console.log(sessionClaims);
 
   const userId = sessionClaims?.userId as string;
 
@@ -28,20 +27,20 @@ const ProfilePage = async ({ searchParams }: SearchParamProps) => {
   return (
     <div className="bg-[#1e1f23]">
       {/* My Tickets */}
-      <section className="bg-[#1e1f23] bg-dotted-pattern bg-cover bg-center pt-24">
-        <div className="wrapper flex flex-row items-center justify-between">
-          <div className="flex flex-col">
-            <h3 className="h3-bold text-[#e41312] text-2xl sm:text-3xl tracking-widest overline mb-4">
+      <section className="bg-[#1e1f23] bg-cover bg-center pt-24">
+        <div className="md:mx-20 flex flex-col sm:flex-row items-center justify-between p-5 sm:p-10">
+          <div className="flex flex-col mb-4 sm:mb-0">
+            <h3 className="h3-bold text-[#e41312] text-2xl sm:text-3xl tracking-widest overline mb-2">
               My Tickets
             </h3>
-            <p className="text-center text-gray-300 mb-6">
+            <p className="text-left text-gray-300 mb-2 sm:mb-0">
               Keep track of your purchased tickets and upcoming events.
             </p>
           </div>
           <Button
             asChild
             size="lg"
-            className="button  text-white border-2 bg-transparent backdrop-blur-lg border-red-600 hover:bg-red-600 transition duration-200"
+            className="button text-white border-2 bg-transparent backdrop-blur-lg border-red-600 hover:bg-red-600 transition duration-200 py-2 px-4 w-full sm:w-auto"
           >
             <Link href="/#events">Explore More Events</Link>
           </Button>
@@ -62,20 +61,20 @@ const ProfilePage = async ({ searchParams }: SearchParamProps) => {
       </section>
 
       {/* Events Organized */}
-      <section className="bg-[#1e1f23] bg-dotted-pattern bg-cover bg-center py-12 md:py-16 mt-10 shadow-lg">
-        <div className="wrapper flex flex-row items-center justify-between">
-          <div className="flex flex-col">
-            <h3 className="h3-bold text-[#e41312] text-2xl sm:text-3xl tracking-widest overline mb-4">
-              Events Organized
+      <section className="bg-[#1e1f23] bg-cover bg-center pt-24">
+        <div className="md:mx-20 flex flex-col sm:flex-row items-center justify-between p-5 sm:p-10">
+        <div className="flex flex-col mb-4 sm:mb-0">
+            <h3 className="h3-bold text-[#e41312] text-2xl sm:text-3xl tracking-widest overline mb-2">
+            Events Organized
             </h3>
-            <p className="text-center text-gray-300">
-              Manage and view the events you've created.
+            <p className="text-left text-gray-300 mb-2 sm:mb-0">
+              Be an Organizer Edit or Create new Events "One Step Ahead!"
             </p>
           </div>
           <Button
             asChild
             size="lg"
-            className="button  text-white border-2 bg-transparent backdrop-blur-lg border-red-600 hover:bg-red-600 transition duration-200"
+            className="button text-white border-2 bg-transparent backdrop-blur-lg border-red-600 hover:bg-red-600 transition duration-200 py-2 px-4 w-full sm:w-auto"
           >
             <Link href="/events/create">Create New Event</Link>
           </Button>
