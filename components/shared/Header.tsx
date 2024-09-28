@@ -1,5 +1,4 @@
 import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
-import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import { Button } from '../ui/button'
@@ -8,35 +7,38 @@ import MobileNav from './MobileNav'
 
 const Header = () => {
   return (
-<header className="bg-[#1e1f23] text-white border-b border-gray-800">
-    <div className="wrapper flex items-center justify-between py-4">
-        <Link href="/" className="w-36 ">
-            <Image 
-                src="/assets/images/logo.png" 
-                width={110} 
-                height={38} 
-                alt="Evently Logo"
-            />
+    <header className="w-full bg-black backdrop-blur-xl z-50 shadow-lg px-2 pt-2">
+      <div className="container mx-auto flex items-center justify-between py-4 px-6">
+            <Link href="/" className="text-3xl font-extrabold tracking-tight text-white">
+          Zen Dev's Eventify
         </Link>
-        <SignedIn>
-            <nav className="md:flex-between hidden w-full max-w-xs">
-                <NavItems />
-            </nav>
-        </SignedIn>
-        <div className="flex items-center gap-3">
-            <SignedIn>
-                <UserButton afterSignOutUrl="/" />
-                <MobileNav />
-            </SignedIn>
-            <SignedOut>
-                <Button asChild className="rounded-lg bg-[#e41312] hover:bg-[#c00303]text-white size-lg">
-                    <Link href="/sign-in">Login</Link>
-                </Button>
-            </SignedOut>
-        </div>
-    </div>
-</header>
+        
+        <div className='flex gap-5'>
 
+        <SignedIn>
+          <nav className="hidden md:flex space-x-10 text-lg font-semibold text-gray-200">
+            <NavItems />
+          </nav>
+        </SignedIn>
+
+        {/* Action Buttons */}
+        <div className="flex items-center gap-8">
+          <SignedIn>
+            <UserButton afterSignOutUrl="/" />
+            <MobileNav />
+          </SignedIn>
+
+          <SignedOut>
+            <Button asChild className="relative group">
+              <Link href="/sign-in" className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-red-500 via-red-600 to-red-700 px-5 py-2 text-white font-medium hover:text-white shadow-lg transition-transform duration-300 ease-out hover:scale-105 hover:shadow-sm">
+                <span>Login</span>
+              </Link>
+            </Button>
+          </SignedOut>
+        </div>
+        </div>
+      </div>
+    </header>
   )
 }
 

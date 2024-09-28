@@ -8,7 +8,7 @@ export const headerLinks = [
       route: '/events/create',
     },
     {
-      label: 'My Profile',
+      label: 'Dashboard',
       route: '/profile',
     },
   ]
@@ -31,36 +31,27 @@ export const headerLinks = [
       id: 1,
       title: "Event Discovery",
       points: [
-        "Explore a diverse range of premier events hosted by TURF.",
-        "Discover events by category, date, or location.",
-        "View comprehensive event details including date, time, and venue."
+        "Explore premier events hosted by TURF, ensuring you never miss out on exciting experiences.",
+        "Easily discover events by category, date, or location, making it simple to find what interests you most.",
+        "Access comprehensive event details, including date, time, venue, and more to make informed decisions."
       ]
     },
     {
       id: 2,
       title: "Easy Booking",
       points: [
-        "Enjoy a simple and intuitive event booking process.",
-        "Securely purchase tickets with various online payment options.",
-        "Receive instant confirmation and e-tickets upon booking."
+        "Experience a straightforward and intuitive event booking system that caters to all users.",
+        "Choose from various online payment options for secure and convenient ticket purchases.",
+        "Enjoy immediate booking confirmations and e-tickets sent directly to your inbox."
       ]
     },
     {
       id: 3,
       title: "Personalized Experience",
       points: [
-        "Receive personalized event recommendations based on your interests.",
-        "Set up customizable event reminders and notifications.",
-        "Save favorite events for quick access and updates."
-      ]
-    },
-    {
-      id: 4,
-      title: "Seamless Integration",
-      points: [
-        "Integrate your calendar with event schedules to stay organized.",
-        "Sync your bookings across multiple devices.",
-        "Connect with social media to share and invite friends."
+        "Receive tailored event recommendations based on your unique interests and preferences.",
+        "Set up custom reminders and notifications for upcoming events, ensuring you never miss an important date.",
+        "Easily save your favorite events for quick access and updates, streamlining your event planning."
       ]
     }
   ];

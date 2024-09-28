@@ -10,8 +10,8 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "TURF Event Horizon",
-  description: "It is a platform for event management",
+  title: "Zen Dev's Eventify",
+  description: "It is a platform for college event management",
   icons:{
     icon: '/assets/images/logo.svg'
   }

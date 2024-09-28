@@ -50,7 +50,7 @@ const CategoryFilter = () => {
         <SelectTrigger className="select-field" >
             <SelectValue placeholder="Category" />
         </SelectTrigger>
-        <SelectContent className='rounded-lg'>
+        <SelectContent className='rounded-lg '>
             <SelectItem value="All" className='select-item items- p-regular-14'>All Categories</SelectItem>
             {categories.map((category)=>(
                 <SelectItem value={category.name} key={category._id} className='select-item p-regular-14'>{category.name}</SelectItem>

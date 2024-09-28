@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { IEvent } from '@/lib/database/models/event.model';
 import { Button } from '../ui/button';
-import { checkoutOrder, createOrder } from '@/lib/actions/order.action'; // Import createOrder
+import { checkoutOrder, createOrder } from '@/lib/actions/order.action';
 
 interface RazorpayResponse {
   razorpay_payment_id: string;
@@ -71,7 +71,7 @@ const Checkout = ({ event, userId }: { event: IEvent, userId: string }) => {
         prefill: {
           name: 'User Name',
           email: 'user@example.com',
-          contact: '9999999999',
+          contact: '785745874',
         },
         theme: {
           color: '#b00403',
