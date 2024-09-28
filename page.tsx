@@ -28,7 +28,7 @@ export default async function Home({ searchParams }: SearchParamProps) {
       <section className="relative bg-[#1e1f23] bg-dotted-pattern bg-contain min-h-screen pb-20 sm:pb-40 flex items-center justify-center">
       <div className="absolute inset-0 z-0">
         <Image
-          src="https://images.pexels.com/photos/325225/pexels-photo-325225.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+          src="/assets/images/bg1.png"
           alt="Background"
           layout="fill"
           objectFit="cover"
@@ -42,7 +42,7 @@ export default async function Home({ searchParams }: SearchParamProps) {
           Connect, Participate, Excel, Campus Events Await!
         </h1>
         <p className="p-regular-20 sm:p-regular-24 text-white mb-8">
-          Discover and engage in the vibrant college community by joining exciting campus events. Be a part of unforgettable experiences that foster growth and connection.
+          Discover and engage in the vibrant college community by joining exciting campus events. 
         </p>
         <SignedOut>
           <Button
@@ -86,7 +86,7 @@ export default async function Home({ searchParams }: SearchParamProps) {
 
       <section
       id="events"
-      className="wrapper mt-10 flex flex-col gap-8 md:gap-12 bg-gradient-to-br  px-4 sm:px-6 lg:px-8 rounded-3xl shadow-2xl"
+      className="wrapper mt-16 flex flex-col gap-8 md:gap-12 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 py-16 px-4 sm:px-6 lg:px-8 rounded-3xl shadow-2xl"
     >
       <div className="text-center">
         <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 leading-tight">

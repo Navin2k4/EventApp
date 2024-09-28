@@ -18,11 +18,10 @@ export const checkoutOrder = async (order: CheckoutOrderParams) => {
   const price = order.isFree ? 0 : Number(order.price) * 100; // Convert to smallest currency unit (e.g., paise for INR)
 
   try {
-    // Create Razorpay order
     const options = {
       amount: price,
       currency: 'INR',
-      receipt: `receipt_order_${order.eventId}`, // Generate a unique receipt ID
+      receipt: `receipt_order_${order.eventId}`,
       notes: {
         eventId: order.eventId,
         buyerId: order.buyerId,
@@ -30,30 +29,16 @@ export const checkoutOrder = async (order: CheckoutOrderParams) => {
     };
 
     const razorpayOrder = await razorpay.orders.create(options);
-    
-    // Create the order in the database
-    const newOrderData: CreateOrderParams = {
-      paymentId: razorpayOrder.id, // Assuming you want to store the Razorpay order ID here
-      eventId: order.eventId,
-      buyerId: order.buyerId,
-      totalAmount: String(razorpayOrder.amount), // Store the total amount as a string
-      createdAt: new Date(), // Set the current date as createdAt
-    };
-
-    const newOrder = await createOrder(newOrderData); // Save the order to the database
-
-    // Return necessary details to frontend
     return {
       orderId: razorpayOrder.id,
       amount: razorpayOrder.amount,
       currency: razorpayOrder.currency,
-      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // Public key for client-side
+      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
     };
   } catch (error) {
     throw error;
   }
 };
-
 
 
 export const createOrder = async (order: CreateOrderParams) => {

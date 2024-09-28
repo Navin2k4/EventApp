@@ -1,18 +1,17 @@
 import React, { useEffect } from 'react';
 import { IEvent } from '@/lib/database/models/event.model';
 import { Button } from '../ui/button';
-import { checkoutOrder } from '@/lib/actions/order.action';
+import { checkoutOrder, createOrder } from '@/lib/actions/order.action'; // Import createOrder
 
-// Interface for the Razorpay payment response
 interface RazorpayResponse {
   razorpay_payment_id: string;
   razorpay_order_id: string;
-  razorpay_signature?: string; // Optional field for signature verification
+  razorpay_signature?: string;
 }
 
 declare global {
   interface Window {
-    Razorpay: any; // Declare Razorpay on the window object
+    Razorpay: any;
   }
 }
 
@@ -36,17 +35,15 @@ const Checkout = ({ event, userId }: { event: IEvent, userId: string }) => {
       isFree: event.isFree,
       buyerId: userId
     };
-
-    // Create the order and get Razorpay options from the backend
+    
     const res = await checkoutOrder(order);
     const { orderId, amount, currency, key } = res;
-
-    // Load Razorpay script dynamically
+    
     const script = document.createElement('script');
     script.src = 'https://checkout.razorpay.com/v1/checkout.js';
     script.async = true;
     document.body.appendChild(script);
-
+    
     script.onload = () => {
       const options = {
         key,
@@ -55,8 +52,20 @@ const Checkout = ({ event, userId }: { event: IEvent, userId: string }) => {
         order_id: orderId,
         name: 'Event Payment',
         description: `Payment for ${event.title}`,
-        handler: function (response: RazorpayResponse) {
+        handler: async function (response: RazorpayResponse) {
           console.log('Payment successful', response);
+
+          // Call createOrder after successful payment
+          const newOrder = {
+            paymentId: response.razorpay_payment_id,
+            eventId: event._id,
+            buyerId: userId,
+            totalAmount: amount ? (Number(amount) / 100).toString() : '0', // Convert paise to rupees
+            createdAt: new Date(),
+          };
+
+          await createOrder(newOrder); // Create order after successful payment
+
           window.location.href = `${process.env.NEXT_PUBLIC_SERVER_URL}/profile`;
         },
         prefill: {
@@ -74,7 +83,7 @@ const Checkout = ({ event, userId }: { event: IEvent, userId: string }) => {
           wallet: true,
         },
       };
-
+      
       const rzp = new window.Razorpay(options);
       rzp.open();
     };

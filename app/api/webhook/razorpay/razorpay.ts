@@ -17,14 +17,11 @@ type RazorpayWebhookPayload = {
   };
 };
 
-// Example handler for the Razorpay webhook
 export const handleRazorpayWebhook = async (req: Request) => {
   const webhookPayload: RazorpayWebhookPayload = await req.json();
-
+  
   if (webhookPayload.event === 'payment.captured') {
-    const { id: orderId, amount, currency, notes } = webhookPayload.payload.order;
-
-    // Prepare the order object
+    const { id: orderId, amount, notes } = webhookPayload.payload.order;
     const order = {
       paymentId: orderId, 
       eventId: notes.eventId || '',
@@ -32,12 +29,7 @@ export const handleRazorpayWebhook = async (req: Request) => {
       totalAmount: amount ? (amount / 100).toString() : '0', // Convert paise to rupees
       createdAt: new Date(), 
     };
-    console.log(order);
-      
-
-    // Create the order in the database
-    const newOrder = await createOrder(order);
-    return NextResponse.json({ message: 'OK', order: newOrder });
+    return NextResponse.json({ message: 'OK', order: order });
   }
 
   return new Response('', { status: 200 });

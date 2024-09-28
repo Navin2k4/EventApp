@@ -7,6 +7,7 @@ export type CreateUserParams = {
     lastName: string
     username: string
     email: string
+    phone: string
     photo: string
   }
   
