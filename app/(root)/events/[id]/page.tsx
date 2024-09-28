@@ -40,8 +40,8 @@ const EventDetails = async ({
   });
 
   return (
-    <div className=" bg-black pb-8">
-      <section className="w-full bg-gradient-to-b pt-4 pb-12">
+    <div className=" bg-black">
+      <section className="w-full bg-gradient-to-b pt-24 pb-12">
         <div className="container mx-auto px-4">
           <Card className=" overflow-hidden  border-none">
             <div className="flex flex-col lg:flex-row">

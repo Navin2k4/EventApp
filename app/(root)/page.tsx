@@ -5,7 +5,10 @@ import Search from "@/components/shared/Search";
 import { StickyScrollRevealDemo } from "@/components/shared/StickyScrollRevealDemo";
 import { Button } from "@/components/ui/button";
 import { featureCards } from "@/constants";
-import { getAllEvents } from "@/lib/actions/event.action";
+import {
+  getAllEvents,
+  getEventTitlesWithFormattedDates,
+} from "@/lib/actions/event.action";
 import { SearchParamProps } from "@/types";
 import { SignedIn, SignedOut } from "@clerk/nextjs";
 import Image from "next/image";
@@ -22,11 +25,12 @@ export default async function Home({ searchParams }: SearchParamProps) {
     page,
     limit: 6,
   });
+  const listEvents = await getEventTitlesWithFormattedDates();
 
   return (
     <div className="bg-[#1e1f23]">
       {/* Hero Section */}
-      <section className="relative bg-[#1e1f23] bg-dotted-pattern min-h-screen pb-20 sm:pb-40 flex items-center justify-center">
+      <section className="relative bg-[#1e1f23] bg-dotted-pattern min-h-screen py-20 sm:pb-40  flex items-center justify-center">
         <div className="absolute inset-0 z-0">
           <Image
             src="https://images.pexels.com/photos/325225/pexels-photo-325225.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
@@ -55,18 +59,11 @@ export default async function Home({ searchParams }: SearchParamProps) {
               Don't miss out on our upcoming events:
             </p>
             <ul className="list-disc list-inside text-lg text-white space-y-2">
-              <li className="bg-white/40 backdrop-blur-md text-white text-lg px-4 py-2 rounded-full shadow-lg flex items-center transition duration-300 hover:shadow-xl border border-white/40">
-                Art Exhibition - March 15th
-              </li>
-              <li className="bg-white/40 backdrop-blur-md text-white text-lg px-4 py-2 rounded-full shadow-lg flex items-center transition duration-300 hover:shadow-xl border border-white/40">
-                Career Fair - March 20th
-              </li>
-              <li className="bg-white/40 backdrop-blur-md text-white text-lg px-4 py-2 rounded-full shadow-lg flex items-center transition duration-300 hover:shadow-xl border border-white/40">
-                Spring Music Festival - April 10th
-              </li>
-              <li className="bg-white/40 backdrop-blur-md text-white text-lg px-4 py-2 rounded-full shadow-lg flex items-center transition duration-300 hover:shadow-xl border border-white/40">
-                Annual Sports Day - April 25th
-              </li>
+              {listEvents.map((event,index) => (
+                <li key={index} className="bg-white/40 backdrop-blur-md text-white text-lg px-4 py-2 rounded-full shadow-lg flex items-center transition duration-300 hover:shadow-xl border border-white/40">
+                  {event.title} - {event.startDate}
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -135,7 +132,7 @@ export default async function Home({ searchParams }: SearchParamProps) {
             <CategoryFilter />
           </div>
           <div className="w-full md:w-2/3 flex justify-center">
-            <Search placeholder="Search for events..."/>
+            <Search placeholder="Search for events..." />
           </div>
         </div>
 

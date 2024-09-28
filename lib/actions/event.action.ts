@@ -123,6 +123,45 @@ export async function getAllEvents({ query, limit = 6, page, category }: GetAllE
   }
 }
 
+
+function getOrdinalSuffix(day: number) {
+  if (day > 3 && day < 21) return 'th';
+  switch (day % 10) {
+    case 1: return 'st';
+    case 2: return 'nd';
+    case 3: return 'rd';
+    default: return 'th';
+  }
+}
+
+function formatDate(date: Date) {
+  const day = date.getDate();
+  const month = date.toLocaleDateString('en-US', { month: 'long' });
+  const year = date.getFullYear();
+  return `${month} ${day}${getOrdinalSuffix(day)}, ${year}`;
+}
+
+
+export async function getEventTitlesWithFormattedDates() {
+  try {
+    // Ensure DB connection
+    await connectToDatabase();
+    const events = await Event.find({}, 'title startDateTime')
+      .sort({ startDateTime: 'asc' }) 
+      .limit(4)
+      .lean();
+    const formattedEvents = events.map(event => ({
+      title: event.title,
+      startDate: formatDate(new Date(event.startDateTime)) // Format the date
+    }));
+
+    return formattedEvents; // Return the array of events with formatted dates
+  } catch (error) {
+    handleError(error); // Handle any errors
+    return [];
+  }
+}
+
 // GET EVENTS BY ORGANIZER
 export async function getEventsByUser({ userId, limit = 6, page }: GetEventsByUserParams) {
   try {

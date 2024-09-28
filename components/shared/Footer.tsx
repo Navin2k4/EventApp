@@ -11,8 +11,12 @@ const Footer = () => {
           href="/"
           className="text-3xl font-extrabold tracking-tight text-white"
         >
-          Zen Dev's Eventify
-        </Link>
+          <Image 
+            src='/assets/images/logo.png'
+            height={20}
+            width={150}
+            alt='Eventify'
+          />         </Link>
 
         <div className="flex gap-4">
           <Link href="https://facebook.com" aria-label="Facebook">
