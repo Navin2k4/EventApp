@@ -77,6 +77,7 @@ const Checkout = ({ event, userId }: { event: IEvent; userId: string }) => {
               buyerId: userId,
               totalAmount: amount ? (Number(amount) / 100).toString() : "0",
               createdAt: new Date(),
+              attended:false,
             };
   
             await createOrder(newOrder);
@@ -113,10 +114,11 @@ const Checkout = ({ event, userId }: { event: IEvent; userId: string }) => {
       buyerId: userId,
       totalAmount: "0",
       createdAt: new Date(),
+      attended:false
     };
     await createOrder(newOrder);
     window.location.href = `${process.env.NEXT_PUBLIC_SERVER_URL}/profile`;
-    setModalOpen(false);  // Close modal after confirming
+    setModalOpen(false); 
   };
 
   const eventCapacity = event.eventCapacity ?? 0;
