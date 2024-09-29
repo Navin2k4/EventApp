@@ -36,7 +36,7 @@ const Card = ({ event, hasOrderLink, hidePrice }: CardProps) => {
           alt={event.title}
           layout="fill"
           objectFit="cover"
-          className="transition-transform duration-300 group-hover:scale-105"
+          className="transition-transform duration-300 group-hover:scale-110"
         />
         </Link>
         {isEventCreator && !hidePrice && (
@@ -78,7 +78,7 @@ const Card = ({ event, hasOrderLink, hidePrice }: CardProps) => {
 
             <Badge
               variant="secondary"
-              className="bg-primary-500 text-md text-white"
+              className="bg-primary-500 text-md hover:bg-black hover:text-white  text-white"
             >
               {event.category.name}
             </Badge>
