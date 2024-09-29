@@ -190,25 +190,22 @@ const EventDetails = async ({
                             index: Key | null | undefined
                           ) => (
                             <li
-                              key={index}
-                              className="flex items-center justify-between px-4 py-3.5 bg-white rounded-lg shadow-md transition hover:shadow-lg"
-                            >
-                              <div className="flex flex-col">
-                                <span className="font-medium text-gray-800">
-                                  {coordinator.name || "N/A"}
-                                </span>
-                                <span className="text-gray-600">
-                                  {coordinator.email || "N/A"}
-                                </span>
-                                <span className="text-gray-600">
-                                  {coordinator.phone || "N/A"}
-                                </span>
-                              </div>
-                              <div className="flex hover:bg-red-500 px-2 py-1 hover:text-white  gap-2 mr-2 text-red-600 rounded-lg transition-all duration-300 focus:outline-none">
-                                <Mail />
-                                <h2>Contact</h2>
-                              </div>
-                            </li>
+                            key={index}
+                            className="flex flex-col sm:flex-row items-start sm:items-center justify-between px-4 py-3.5 bg-white rounded-lg shadow-md transition hover:shadow-lg space-y-3 sm:space-y-0"
+                          >
+                            <div className="flex flex-col">
+                              <span className="font-medium text-gray-800">
+                                {coordinator.name || "N/A"}
+                              </span>
+                              <span className="text-sm md:text-md text-gray-600">{coordinator.email || "N/A"}</span>
+                              <span className="text-sm md:text-md text-gray-600">{coordinator.phone || "N/A"}</span>
+                            </div>
+                            <div className="flex items-center hover:bg-red-500 px-2 py-1 hover:text-white gap-2 text-red-600 rounded-lg transition-all duration-300 focus:outline-none">
+                              <Mail />
+                              <h2>Contact</h2>
+                            </div>
+                          </li>
+                          
                           )
                         )}
                       </ul>

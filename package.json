@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^4.30.0",
+    "@headlessui/react": "^2.1.8",
     "@hookform/resolvers": "^3.6.0",
     "@radix-ui/react-alert-dialog": "^1.1.1",
     "@radix-ui/react-checkbox": "^1.1.0",
@@ -37,6 +38,7 @@
     "react-datepicker": "^7.1.0",
     "react-dom": "^18",
     "react-hook-form": "^7.52.0",
+    "react-zoom-pan-pinch": "^3.6.1",
     "stripe": "^16.0.0",
     "svix": "^1.24.0",
     "tailwind-merge": "^2.3.0",
