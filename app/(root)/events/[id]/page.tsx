@@ -31,16 +31,18 @@ import CopyLinkButton from "@/components/shared/CopyLinkButton";
 import { Key } from "react";
 import { auth } from "@clerk/nextjs";
 import { hasUserBoughtEvent } from "@/lib/actions/order.action";
-import { Button } from "@/components/ui/button";
 
 const EventDetails = async ({
   params: { id },
   searchParams,
 }: SearchParamProps) => {
+
   const event = await getEventById(id);
   const { sessionClaims } = auth();
   const userId = sessionClaims?.userId as string;
-
+  const isEventCreator = userId === event.organizer._id.toString();
+  console.log(isEventCreator);
+  
   const isPurchased = await hasUserBoughtEvent(userId, event._id);
 
   const relatedEvents = await getRelatedEventsByCategory({
@@ -66,44 +68,57 @@ const EventDetails = async ({
               </div>
 
               <CardContent className="w-full lg:w-1/2 p-6 lg:p-10 bg-gray-300">
-                <CardHeader className="p-0 mb-6">
-                  <div className="flex flex-wrap items-center gap-3 mb-4">
-                    {isPurchased && (
-                      <Badge
-                        variant="outline"
-                        className="bg-green-100 border-black text-md py-1 px-3"
-                      >
-                        Purchased
-                      </Badge>
-                    )}
-                    <Badge
-                      variant={
-                        event.isFree || event.price === ""
-                          ? "outline"
-                          : "destructive"
-                      }
-                      className="text-lg py-1 px-3 border-white"
-                    >
-                      {event.isFree || event.price === ""
-                        ? "FREE"
-                        : `Rs.${event.price}`}
-                    </Badge>
-                    <Badge
-                      variant="outline"
-                      className="bg-purple-100 border-black text-md py-1 px-3"
-                    >
-                      {event.category.name}
-                    </Badge>
-                  </div>
-                  <CardTitle className="text-3xl font-bold text-gray-800 mb-2">
-                    {event.title}
-                  </CardTitle>
-                  <CardDescription className="text-gray-600 flex items-center">
-                    <User className="h-4 w-4 mr-2" />
-                    Organized by {event.organizer.firstName}{" "}
-                    {event.organizer.lastName}
-                  </CardDescription>
-                </CardHeader>
+              <CardHeader className="p-0 mb-6 relative">
+  <div className="flex flex-wrap items-center gap-3 mb-4">
+    {isPurchased && (
+      <Badge
+        variant="outline"
+        className="bg-green-100 border-black text-md py-1 px-3"
+      >
+        Purchased
+      </Badge>
+    )}
+    <Badge
+      variant={
+        event.isFree || event.price === ""
+          ? "outline"
+          : "destructive"
+      }
+      className="text-lg py-1 px-3 border-white"
+    >
+      {event.isFree || event.price === ""
+        ? "FREE"
+        : `Rs.${event.price}`}
+    </Badge>
+    <Badge
+      variant="outline"
+      className="bg-purple-100 border-black text-md py-1 px-3"
+    >
+      {event.category.name}
+    </Badge>
+  </div>
+  
+  {/* Event Creator Indicator and Image */}
+  <div className="absolute top-0 right-0 flex items-center">
+    {isEventCreator && (
+    <div className="w-[120px] h-[120px] border-2 border-gray-200 rounded-lg overflow-hidden mr-2">
+      {/* Replace with actual image source */}
+      <img src={event.imageUrl} alt="Event" className="w-full h-full object-cover" />
+    </div>
+
+    )}
+  </div>
+
+  <CardTitle className="text-3xl font-bold text-gray-800 mb-2">
+    {event.title}
+  </CardTitle>
+  <CardDescription className="text-gray-600 flex items-center">
+    <User className="h-4 w-4 mr-2" />
+    Organized by {event.organizer.firstName}{" "}
+    {event.organizer.lastName}
+  </CardDescription>
+</CardHeader>
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                   <div className="flex items-start gap-3">
                     <Calendar className="h-5 w-5 text-red-600 mt-1" />

@@ -22,7 +22,6 @@ import DropDown from "./DropDown";
 import { Textarea } from "../ui/textarea";
 import { FileUploader } from "./FileUploader";
 import { useState } from "react";
-import Image from "next/image";
 import { Checkbox } from "../ui/checkbox";
 import { useUploadThing } from "@/lib/uploadthing";
 import { useRouter } from "next/navigation";
@@ -56,8 +55,10 @@ type EventFormProps = {
 };
 
 const EventForm = ({ userId, type, event, eventId }: EventFormProps) => {
+  
   const [files, setFiles] = useState<File[]>([]);
-  const [showCoordinators, setShowCoordinators] = useState(false); // State for toggle
+
+  const [showCoordinators, setShowCoordinators] = useState(false); 
   const [coordinators, setCoordinators] = useState([
     { name: "", email: "", phone: "" },
   ]); // Default state
@@ -135,6 +136,7 @@ const EventForm = ({ userId, type, event, eventId }: EventFormProps) => {
         console.log(error);
       }
     }
+
     if (type === "Update") {
       if (!eventId) {
         router.back();
