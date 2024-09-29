@@ -246,7 +246,7 @@ const EventForm = ({ userId, type, event, eventId }: EventFormProps) => {
                   <div className="flex-center h-[55px] w-full overflow-hidden rounded-full bg-grey-50 px-4 py-2">
                     <Map />
                     <Input
-                      placeholder="Map Location URL (Optional)"
+                      placeholder="Map Location URL Embedded Link (Optional)"
                       {...field}
                       className="input-field"
                     />

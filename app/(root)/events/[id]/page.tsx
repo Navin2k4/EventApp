@@ -43,7 +43,6 @@ const EventDetails = async ({
 
   const isPurchased = await hasUserBoughtEvent(userId, event._id);
 
-
   const relatedEvents = await getRelatedEventsByCategory({
     categoryId: event.category._id,
     eventId: event._id,
@@ -69,14 +68,14 @@ const EventDetails = async ({
               <CardContent className="w-full lg:w-1/2 p-6 lg:p-10 bg-gray-300">
                 <CardHeader className="p-0 mb-6">
                   <div className="flex flex-wrap items-center gap-3 mb-4">
-                    
-                  {isPurchased && 
-                    <Badge
-                      variant="outline"
-                      className="bg-green-100 border-black text-md py-1 px-3"
-                    >
-                      Purchased
-                    </Badge>}
+                    {isPurchased && (
+                      <Badge
+                        variant="outline"
+                        className="bg-green-100 border-black text-md py-1 px-3"
+                      >
+                        Purchased
+                      </Badge>
+                    )}
                     <Badge
                       variant={
                         event.isFree || event.price === ""
@@ -149,13 +148,23 @@ const EventDetails = async ({
                     </div>
                   </div>
                 </div>
-                <div className="flex-center flex-col py-5 rounded-lg bg-white text-grey-500">
+                {/* <div className="flex-center flex-col py-5 rounded-lg bg-white text-grey-500">
                   <Map width={60} height={60} />
                   <h3 className="mb-2 mt-2">Location Placeholder</h3>
                   <p className="p-medium-12">
                     Call API and try to get the map of the given location
                   </p>
-                </div>
+                </div> */}
+                {event.mapLocation && (
+                  <div className="flex-center flex-col rounded-lg bg-white text-grey-500">
+                    <iframe
+                      src={event.mapLocation}
+                      width="600"
+                      height="200"
+                      loading="lazy"
+                    ></iframe>
+                  </div>
+                )}
                 {/* Event Description */}
                 <div className="space-y-4 my-6">
                   <h3 className="text-xl font-semibold text-gray-800">
@@ -190,22 +199,27 @@ const EventDetails = async ({
                             index: Key | null | undefined
                           ) => (
                             <li
-                            key={index}
-                            className="flex flex-col sm:flex-row items-start sm:items-center justify-between px-4 py-3.5 bg-white rounded-lg shadow-md transition hover:shadow-lg space-y-3 sm:space-y-0"
-                          >
-                            <div className="flex flex-col">
-                              <span className="font-medium text-gray-800">
-                                {coordinator.name || "N/A"}
-                              </span>
-                              <span className="text-sm md:text-md text-gray-600">{coordinator.email || "N/A"}</span>
-                              <span className="text-sm md:text-md text-gray-600">{coordinator.phone || "N/A"}</span>
-                            </div>
-                            <div className="flex items-center hover:bg-red-500 px-2 py-1 hover:text-white gap-2 text-red-600 rounded-lg transition-all duration-300 focus:outline-none">
-                              <Mail />
-                              <h2>Contact</h2>
-                            </div>
-                          </li>
-                          
+                              key={index}
+                              className="flex flex-col sm:flex-row items-start sm:items-center justify-between px-4 py-3.5 bg-white rounded-lg shadow-md transition hover:shadow-lg space-y-3 sm:space-y-0"
+                            >
+                              <div className="flex flex-col">
+                                <span className="font-medium text-gray-800">
+                                  {coordinator.name || "N/A"}
+                                </span>
+                                <span className="text-sm md:text-md text-gray-600">
+                                  {coordinator.email || "N/A"}
+                                </span>
+                                <span className="text-sm md:text-md text-gray-600">
+                                  {coordinator.phone || "N/A"}
+                                </span>
+                              </div>
+                              <a 
+                              href={`mailto:${coordinator.email}`}
+                              className="flex items-center hover:cursor-pointer hover:bg-red-500 px-2 py-1 hover:text-white gap-2 text-red-600 rounded-lg transition-all duration-300 focus:outline-none">
+                                <Mail />
+                                <h2>Contact</h2>
+                              </a>
+                            </li>
                           )
                         )}
                       </ul>
@@ -220,15 +234,14 @@ const EventDetails = async ({
                 {isPurchased ? (
                   <div className="flex items-center justify-between bg-gray-200 p-4 rounded-lg shadow-md">
                     <p className="text-lg font-semibold">
-                      You have already purchased! Scan for Attandance 
+                      You have already purchased! Scan for Attandance
                     </p>
                     <button
-                    className="p-2 border border-black rounded-md hover:bg-black hover:text-white transition-colors duration-300" 
+                      className="p-2 border border-black rounded-md hover:bg-black hover:text-white transition-colors duration-300"
                       type="button"
-                    
                     >
                       <QrCode height={32} width={32} />
-                      </button>
+                    </button>
                   </div>
                 ) : (
                   <CheckoutButton event={event} />
