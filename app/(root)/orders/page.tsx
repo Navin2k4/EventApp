@@ -13,8 +13,8 @@ const Orders = async ({ searchParams }: SearchParamProps) => {
   console.log(orders);
   
   return (
-    <div className='bg-[#1e1f23]'>
-      <section className=" bg-[#1e1f23] bg-dotted-pattern bg-cover bg-center py-3 md:py-6">
+    <div className='bg-[#1e1f23] pt-20'>
+      <section className=" bg-[#1e1f23] bg-cover bg-center py-3  md:py-6">
         <h3 className="wrapper h3-bold text-center text-[#e41312] sm:text-left tracking-widest overline">Bookings Made</h3>
       </section>
 

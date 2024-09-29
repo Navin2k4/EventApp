@@ -30,7 +30,7 @@ export default async function Home({ searchParams }: SearchParamProps) {
   return (
     <div className="bg-[#1e1f23]">
       {/* Hero Section */}
-      <section className="relative bg-[#1e1f23] bg-dotted-pattern min-h-screen py-20 sm:pb-40  flex items-center justify-center">
+      <section className="relative bg-[#1e1f23] min-h-screen py-20 sm:pb-40  flex items-center justify-center">
         <div className="absolute inset-0 z-0">
           <Image
             src="https://images.pexels.com/photos/325225/pexels-photo-325225.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"

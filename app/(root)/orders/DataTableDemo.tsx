@@ -35,7 +35,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { formatDateTime, formatPrice } from "@/lib/utils";
+import { formatDateTime, formatPhoneNumber, formatPrice } from "@/lib/utils";
 
 export type Order = {
   _id: string;
@@ -47,15 +47,15 @@ export type Order = {
 };
 
 export const columns: ColumnDef<Order>[] = [
+  // {
+  //   accessorKey: "_id",
+  //   header: "Order ID",
+  //   cell: ({ row }) => row.getValue("_id"),
+  // },
   {
-    accessorKey: "_id",
-    header: "Order ID",
-    cell: ({ row }) => row.getValue("_id"),
-  },
-  {
-    accessorKey: "paymentId",
-    header: "Order Id",
-    cell: ({ row }) => row.getValue("paymentId"),
+    accessorKey: "buyerPhone",
+    header: "Phone",
+    cell: ({ row }) => formatPhoneNumber(row.getValue("buyerPhone")),
   },
   {
     accessorKey: "eventTitle",
@@ -84,6 +84,11 @@ export const columns: ColumnDef<Order>[] = [
       </Button>
     ),
     cell: ({ row }) => formatDateTime(row.getValue("createdAt")).dateTime,
+  },
+  {
+    accessorKey: "paymentId",
+    header: "Order Id",
+    cell: ({ row }) => row.getValue("paymentId"),
   },
   {
     accessorKey: "totalAmount",
@@ -127,7 +132,7 @@ export function DataTableDemo({ data }: DataTableDemoProps) {
   return (
     <div className="w-full p-3 bg-gray-200 rounded-lg">
       <div className="flex items-center py-4">
-        <Input
+        {/* <Input
           placeholder="Filter by email..."
           value={
             (table.getColumn("buyerMail")?.getFilterValue() as string) ?? ""
@@ -136,7 +141,7 @@ export function DataTableDemo({ data }: DataTableDemoProps) {
             table.getColumn("buyerMail")?.setFilterValue(event.target.value)
           }
           className="max-w-sm input-field"
-        />
+        /> */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="">
@@ -215,11 +220,11 @@ export function DataTableDemo({ data }: DataTableDemoProps) {
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
+        {/* <div className="flex-1 text-sm text-muted-foreground">
           {table.getFilteredSelectedRowModel().rows.length} of{" "}
           {table.getFilteredRowModel().rows.length} row(s) selected.
-        </div>
-        <div className="space-x-2">
+        </div> */}
+        <div className="space-x-2 px-2">
           <Button
             variant="outline"
             size="sm"
