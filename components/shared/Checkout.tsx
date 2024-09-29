@@ -46,7 +46,6 @@ const Checkout = ({ event, userId }: { event: IEvent; userId: string }) => {
       isFree: event.isFree,
       buyerId: userId,
     };
-    console.log(order);
   
     if (event.isFree) {
       // Open modal for free event confirmation
@@ -115,7 +114,6 @@ const Checkout = ({ event, userId }: { event: IEvent; userId: string }) => {
       totalAmount: "0",
       createdAt: new Date(),
     };
-    console.log(newOrder);
     await createOrder(newOrder);
     window.location.href = `${process.env.NEXT_PUBLIC_SERVER_URL}/profile`;
     setModalOpen(false);  // Close modal after confirming

@@ -42,8 +42,6 @@ const EventDetails = async ({
   const { sessionClaims } = auth();
   const userId = sessionClaims?.userId as string;
   const isEventCreator = userId === event.organizer._id.toString();
-  console.log(isEventCreator);
-
   const isPurchased = await hasUserBoughtEvent(userId, event._id);
 
   const relatedEvents = await getRelatedEventsByCategory({
@@ -66,10 +64,26 @@ const EventDetails = async ({
                   objectFit="cover"
                 />
                 <CopyLinkButton eventId={event._id} />
+                {isEventCreator && (
+                  <div className="absolute flex items-start left-3 top-3 p-2 bg-white rounded-lg shadow-md">
+                    <QRComp
+                      eventId={event._id.toString()}
+                      eventTitle={event.title}
+                    />
+                    <div className="ml-3 flex flex-col justify-center">
+                      <h2 className="text-lg font-semibold">Download</h2>
+                      <h2 className="text-lg font-semibold">
+                        Scan for Attendance
+                      </h2>
+                    </div>
+                  </div>
+                )}
               </div>
 
               <CardContent className="w-full lg:w-1/2 p-6 lg:p-10 bg-gray-300">
                 <CardHeader className="p-0 mb-6 relative">
+                  {/* Event Creator Indicator and Image */}
+
                   <div className="flex flex-wrap items-center gap-3 mb-4">
                     {isPurchased && (
                       <Badge
@@ -97,26 +111,6 @@ const EventDetails = async ({
                     >
                       {event.category.name}
                     </Badge>
-                  </div>
-
-                  {/* Event Creator Indicator and Image */}
-                  <div className="absolute -top-4 right-0 flex items-center">
-                    {isEventCreator && (
-                      <div className="flex flex-col items-center justify-center ">
-                        <div className="">
-                          <QRComp
-                            eventId={event._id.toString()}
-                            eventTitle={event.title}
-                          />
-                        </div>
-                        <div className="flex items-center justify-center gap-1 my-2">
-                            <Download />
-                          <h3 className="font-thin mr-2">
-                            Attandance
-                          </h3>
-                        </div>
-                      </div>
-                    )}
                   </div>
 
                   <CardTitle className="text-3xl font-bold text-gray-800 mb-2">

@@ -115,7 +115,6 @@ const EventForm = ({ userId, type, event, eventId }: EventFormProps) => {
           }))
         : [], // Use an empty array if toggled off
     };
-    console.log(updatedValues);
 
     if (type === "Create") {
       try {
