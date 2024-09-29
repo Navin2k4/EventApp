@@ -12,7 +12,7 @@ const CreateEvent = () => {
         <h3 className="wrapper h3-bold tracking-widest text-center text-[#e41312] sm:text-left">Create Your Event</h3>
       </section>
 
-      <div className="wrapper mt-8 ">
+      <div className="wrapper ">
         <EventForm userId={userId} type="Create" />
       </div>
     </div>

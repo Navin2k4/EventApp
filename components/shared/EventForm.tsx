@@ -34,10 +34,19 @@ import {
   Locate,
   LucideIndianRupee,
   Map,
+  Plus,
+  Trash2,
   UserPlus2,
   Users,
 } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
+import { motion } from "framer-motion";
+
+// Animation variants
+const variants = {
+  hidden: { opacity: 0, height: 0 },
+  visible: { opacity: 1, height: "auto" },
+};
 
 type EventFormProps = {
   userId: string;
@@ -52,7 +61,12 @@ const EventForm = ({ userId, type, event, eventId }: EventFormProps) => {
   const [coordinators, setCoordinators] = useState([
     { name: "", email: "", phone: "" },
   ]); // Default state
-
+  const handleDeleteCoordinator = (index:any) => {
+    setCoordinators((prevCoordinators) =>
+      prevCoordinators.filter((_, i) => i !== index)
+    );
+  };
+  
   const initialValues =
     event && type === "Update"
       ? {
@@ -427,89 +441,107 @@ const EventForm = ({ userId, type, event, eventId }: EventFormProps) => {
             </FormItem>
           )}
         />
-        <div className="flex-center h-[54px] w-full overflow-hidden rounded-full text-white px-4 py-2">
-          <UserPlus2 className="mr-2" />
-          <label htmlFor="showCoordinators" className="mr-4 text-white">
-            Include Coordinators
-          </label>
-          <Switch
-            id="showCoordinators"
-            className="h-6 w-11"
-            checked={showCoordinators}
-            onCheckedChange={() => setShowCoordinators(!showCoordinators)}
-          />
-        </div>
+<div className="flex-center items-center gap-2 h-[54px] w-full overflow-hidden rounded-full text-white px-4 py-2">
+  <UserPlus2 className="mr-2" />
+  <label htmlFor="showCoordinators" className="mr-4 text-white">
+    Include Coordinators
+  </label>
+  <Switch
+    id="showCoordinators"
+    className="h-6 w-11"
+    checked={showCoordinators}
+    onCheckedChange={() => setShowCoordinators(!showCoordinators)}
+  />
+  <Button
+    variant={"outline"}
+    type="button"
+    onClick={() =>
+      setCoordinators([
+        ...coordinators,
+        { name: "", email: "", phone: "" },
+      ])
+    }
+    className="ml-4 font-semibold text-white rounded-l-full rounded-tr-lg hover:text-white hover:bg-black"
+  >
+    Add Coordinator
+    <Plus className="ml-2"/>
+  </Button>
+</div>
 
-        {showCoordinators && (
-          <div>
-            {coordinators.map((_, index) => (
-              <div key={index} className="mb-4 flex flex-col gap-5 md:flex-row">
-                <FormField
-                  control={form.control}
-                  name={`coordinators.${index}.name`}
-                  render={({ field }) => (
-                    <FormItem className="w-full">
-                      <FormControl>
-                        <Input
-                          placeholder="Coordinator Name"
-                          {...field}
-                          className="input-field"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name={`coordinators.${index}.email`}
-                  render={({ field }) => (
-                    <FormItem className="w-full">
-                      <FormControl>
-                        <Input
-                          type="text"
-                          placeholder="Coordinator Email"
-                          {...field}
-                          className="input-field"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name={`coordinators.${index}.phone`}
-                  render={({ field }) => (
-                    <FormItem className="w-full">
-                      <FormControl>
-                        <Input
-                          placeholder="Coordinator Phone"
-                          {...field}
-                          className="input-field"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-            ))}
-            <Button
-              variant={"outline"}
-              type="button"
-              onClick={() =>
-                setCoordinators([
-                  ...coordinators,
-                  { name: "", email: "", phone: "" },
-                ])
-              }
-              className="mt-2"
-            >
-              Add Coordinator
-            </Button>
-          </div>
+<motion.div
+  initial="hidden"
+  animate={showCoordinators ? "visible" : "hidden"}
+  variants={variants}
+  transition={{ duration: 0.3, ease: "easeInOut" }}
+>
+  {coordinators.map((_, index) => (
+    <motion.div
+      key={index}
+      initial="hidden"
+      animate="visible"
+      variants={variants}
+      transition={{ duration: 0.3, ease: "easeInOut" }}
+      className="mb-4 flex flex-col items-center gap-5 md:flex-row"
+    >
+      <FormField
+        control={form.control}
+        name={`coordinators.${index}.name`}
+        render={({ field }) => (
+          <FormItem className="w-full">
+            <FormControl>
+              <Input
+                placeholder="Coordinator Name"
+                {...field}
+                className="input-field"
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
         )}
+      />
+      <FormField
+        control={form.control}
+        name={`coordinators.${index}.email`}
+        render={({ field }) => (
+          <FormItem className="w-full">
+            <FormControl>
+              <Input
+                type="text"
+                placeholder="Coordinator Email"
+                {...field}
+                className="input-field"
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <FormField
+        control={form.control}
+        name={`coordinators.${index}.phone`}
+        render={({ field }) => (
+          <FormItem className="w-full">
+            <FormControl>
+              <Input
+                placeholder="Coordinator Phone"
+                {...field}
+                className="input-field"
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <button
+        type="button"
+        onClick={() => handleDeleteCoordinator(index)}
+        className="self-center bg-transparent border border-red-500 p-3 hover:bg-black hover:text-white hover:border-white transition-all duration-200 text-red-500 rounded-full"
+      >
+        <Trash2 height={20} width={20}/>
+      </button>
+    </motion.div>
+  ))}
+</motion.div>
 
         <Button
           type="submit"
