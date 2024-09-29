@@ -27,7 +27,7 @@ const QRComp: React.FC<QRCompProps> = ({ eventId, eventTitle }) => {
       });
 
       // Add event title at the top of the page
-      pdf.setFontSize(42)
+      pdf.setFontSize(42);
       pdf.text(eventTitle, 105, 20, { align: "center" });
 
       // Calculate image size to fit on A4
@@ -53,7 +53,7 @@ const QRComp: React.FC<QRCompProps> = ({ eventId, eventTitle }) => {
       >
         {eventId && (
           <SVG
-            text={eventId}
+            text={`https://evently-beige-eight.vercel.app/api/event/attend?eventId=${eventId}`}
             options={{
               margin: 2,
               color: {
