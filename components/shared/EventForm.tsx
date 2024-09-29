@@ -401,10 +401,10 @@ const EventForm = ({ userId, type, event, eventId }: EventFormProps) => {
                         const value = e.target.value;
                         field.onChange(
                           value === "" ? undefined : Number(value)
-                        ); 
+                        );
                       }}
-                      value={field.value || ""} 
-                    />  
+                      value={field.value || ""}
+                    />
                   </div>
                 </FormControl>
                 <FormMessage />
@@ -496,6 +496,7 @@ const EventForm = ({ userId, type, event, eventId }: EventFormProps) => {
               </div>
             ))}
             <Button
+              variant={"outline"}
               type="button"
               onClick={() =>
                 setCoordinators([
