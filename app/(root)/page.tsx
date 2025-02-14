@@ -1,18 +1,13 @@
 import CategoryFilter from "@/components/shared/CategoryFilter";
 import Collection from "@/components/shared/Collection";
-import { GlareCardDemo } from "@/components/shared/GlareCardDemo";
 import Search from "@/components/shared/Search";
-import { StickyScrollRevealDemo } from "@/components/shared/StickyScrollRevealDemo";
 import { Button } from "@/components/ui/button";
-import { featureCards } from "@/constants";
-import {
-  getAllEvents,
-  getEventTitlesWithFormattedDates,
-} from "@/lib/actions/event.action";
+import { getAllEvents, getEventTitlesWithFormattedDates } from "@/lib/actions/event.action";
 import { SearchParamProps } from "@/types";
 import { SignedIn, SignedOut } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
+import { ArrowRight, Calendar, Users, Zap } from 'lucide-react';
 
 export default async function Home({ searchParams }: SearchParamProps) {
   const page = Number(searchParams?.page) || 1;
@@ -28,124 +23,126 @@ export default async function Home({ searchParams }: SearchParamProps) {
   const listEvents = await getEventTitlesWithFormattedDates();
 
   return (
-    <div className="bg-[#1e1f23]">
+    <div className="min-h-screen bg-gradient-to-b from-[#0f1014] to-[#1e1f23]">
       {/* Hero Section */}
-      <section className="relative bg-[#1e1f23] min-h-screen py-20 sm:pb-40  flex items-center justify-center">
+      <section className="relative min-h-[90vh] flex items-center">
         <div className="absolute inset-0 z-0">
+          <div className="absolute inset-0 bg-black/60 mix-blend-multiply" />
           <Image
-            src="https://images.pexels.com/photos/325225/pexels-photo-325225.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-            alt="Background"
+            src="/hero-background.jpg"
+            alt="Hero Background"
             layout="fill"
             objectFit="cover"
             quality={100}
+            priority
+            className="object-center"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/50" />
         </div>
 
-        <div className="wrapper relative z-10 flex flex-col items-center text-center max-w-4xl mx-auto px-4">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            Connect, Participate, and Excel!
-          </h1>
-          <p className="text-lg sm:text-xl text-white mb-8">
-            Join our vibrant college community and dive into exciting events
-            that foster growth and connection.
-          </p>
-
-          <div className="mb-8">
-            <h2 className="text-2xl font-semibold text-[#e41312] mb-4 mt-6">
-              Upcoming Events
-            </h2>
-            <p className="text-lg text-white mb-4">
-              Don't miss out on our upcoming events:
+        <div className="wrapper relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="space-y-8">
+            <h1 className="text-5xl lg:text-7xl font-bold text-white leading-tight">
+              Where Campus Life <span className="text-[#e41312]">Comes Alive</span>
+            </h1>
+            <p className="text-xl text-gray-300 max-w-xl">
+              Discover, participate, and create memorable experiences in your college community.
+              Join events that shape your journey.
             </p>
-            <ul className="list-disc list-inside text-lg text-white space-y-2">
-              {listEvents.map((event,index) => (
-                <li key={index} className="bg-white/40 backdrop-blur-md text-white text-lg px-4 py-2 rounded-full shadow-lg flex items-center transition duration-300 hover:shadow-xl border border-white/40">
-                  {event.title} - {event.startDate}
-                </li>
-              ))}
-            </ul>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <SignedOut>
+                <Button size="lg" className="bg-[#e41312] hover:bg-[#c00303] text-lg px-8">
+                  Get Started
+                </Button>
+              </SignedOut>
+              <SignedIn>
+                <Button size="lg" className="bg-[#e41312] hover:bg-[#c00303] text-lg px-8">
+                  Create Event
+                </Button>
+              </SignedIn>
+              <Button size="lg" variant="outline" className="text-white border-white hover:bg-white/10">
+                Explore Events
+              </Button>
+            </div>
           </div>
 
-          <SignedOut>
-            <Button
-              size="lg"
-              asChild
-              className="w-full text-md lg:text-lg bg-[#e41312] hover:bg-[#c00303] sm:w-fit"
-            >
-              <Link href="#about">Explore Now</Link>
-            </Button>
-          </SignedOut>
-          <SignedIn>
-            <Button
-              size="lg"
-              asChild
-              className="w-full text-md lg:text-lg bg-[#e41312] hover:bg-[#c00303] sm:w-fit"
-            >
-              <Link href="#events">Book or Create an Event</Link>
-            </Button>
-          </SignedIn>
+          <div className="hidden lg:block">
+            <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
+              <h3 className="text-xl font-semibold text-white mb-4">Upcoming Highlights</h3>
+              <div className="space-y-3">
+                {listEvents.slice(0, 3).map((event, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center gap-4 bg-white/5 rounded-xl p-4 hover:bg-white/10 transition-colors"
+                  >
+                    <Calendar className="text-[#e41312]" />
+                    <div>
+                      <p className="text-white font-medium">{event.title}</p>
+                      <p className="text-gray-400 text-sm">{event.startDate}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Provisions Section */}
-      <section id="provisions" className="wrapper my-5 mt-10">
-        <h2 className="text-3xl md:text-4xl font-bold text-center text-white">
-          Cultivating Connections Through Every Event!
-        </h2>
-        <StickyScrollRevealDemo />
-      </section>
-
-      {/* About Section */}
-      <section id="about" className="bg-[#1e1f23] p-5 lg:py-10">
-        <h2 className="text-3xl md:text-4xl text-white font-bold text-center pb-10">
-          Explore Our Key Features
-        </h2>
-        <div className="grid grid-flow-col gap-6 sm:gap-3 justify-evenly overflow-x-auto p-4">
-          {featureCards.map((feature) => (
-            <div key={feature.id} className="card">
-              <GlareCardDemo title={feature.title} points={feature.points} />
+      {/* Stats Section */}
+      <section className="py-20 wrapper">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {[
+            { icon: Users, label: 'Active Users', value: '2,000+' },
+            { icon: Calendar, label: 'Events Hosted', value: '500+' },
+            { icon: Zap, label: 'Success Rate', value: '98%' },
+          ].map((stat, index) => (
+            <div key={index} className="bg-white/5 rounded-2xl p-6 text-center hover:bg-white/10 transition-all">
+              <stat.icon className="w-12 h-12 text-[#e41312] mx-auto mb-4" />
+              <h4 className="text-2xl font-bold text-white mb-2">{stat.value}</h4>
+              <p className="text-gray-400">{stat.label}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* Events Section */}
-      <section
-        id="events"
-        className="mt-16 py-12 px-6 sm:px-10 lg:px-16 bg-gradient-to-br from-[#1e1f23] to-[#0d0e10] rounded-3xl shadow-2xl"
-      >
-        <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 leading-tight">
-            Discover a World of <br className="hidden sm:inline" />
-            Exciting{" "}
-            <span className="text-[#f73835] animate-pulse">Events</span>
+      <section id="events" className="wrapper py-20">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl font-bold text-white mb-4">
+            Discover Amazing Events
           </h2>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-            Dive into amazing experiences happening in your college and around
-            you. Stay connected with what's coming up next!
+          <p className="text-gray-400 max-w-2xl mx-auto">
+            Browse through our curated collection of events designed to enhance your college experience
           </p>
         </div>
 
-        <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-          <div className="w-full md:w-1/3 flex justify-center md:justify-start">
-            <CategoryFilter />
-          </div>
-          <div className="w-full md:w-2/3 flex justify-center">
-            <Search placeholder="Search for events..." />
-          </div>
+        <div className="flex flex-col md:flex-row gap-6 mb-12">
+          <CategoryFilter />
+          <Search placeholder="Search events..." />
         </div>
 
-        <div className="mt-12">
-          <Collection
-            data={events?.data}
-            emptyTitle="No Events Found"
-            emptyStateSubtext="Check back later for more events!"
-            collectionType="All_Events"
-            limit={6}
-            page={page}
-            totalPages={events?.totalPages}
-          />
+        <Collection
+          data={events?.data}
+          emptyTitle="No Events Found"
+          emptyStateSubtext="Come back later for new events!"
+          collectionType="All_Events"
+          limit={6}
+          page={page}
+          totalPages={events?.totalPages}
+        />
+      </section>
+
+      {/* CTA Section */}
+      <section className="wrapper py-20">
+        <div className="bg-gradient-to-r from-[#e41312] to-[#ff4b48] rounded-3xl p-12 text-center">
+          <h2 className="text-4xl font-bold text-white mb-6">
+            Ready to Create Your Own Event?
+          </h2>
+          <p className="text-white/90 mb-8 max-w-2xl mx-auto">
+            Take the lead and organize an event that matters. Share your passion with the community.
+          </p>
+          <Button size="lg" variant="secondary" className="text-[#e41312]">
+            Start Creating <ArrowRight className="ml-2" />
+          </Button>
         </div>
       </section>
     </div>

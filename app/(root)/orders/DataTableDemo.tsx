@@ -16,17 +16,12 @@ import {
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -94,6 +89,10 @@ export const columns: ColumnDef<Order>[] = [
     accessorKey: "totalAmount",
     header: "Amount",
     cell: ({ row }) => formatPrice(row.getValue("totalAmount")),
+  }, {
+    accessorKey: "attended",
+    header: "attended",
+    cell: ({ row }) => row.getValue("attended"),
   },
 ];
 
@@ -130,25 +129,22 @@ export function DataTableDemo({ data }: DataTableDemoProps) {
   });
 
   return (
-    <div className="w-full p-3 bg-gray-200 rounded-lg">
-      <div className="flex items-center py-4">
-        {/* <Input
-          placeholder="Filter by email..."
-          value={
-            (table.getColumn("buyerMail")?.getFilterValue() as string) ?? ""
-          }
-          onChange={(event) =>
-            table.getColumn("buyerMail")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm input-field"
-        /> */}
+    <div className="w-full">
+      <div className="flex items-center justify-between py-4">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="">
-              Columns <ChevronDown className="ml-2 h-4 w-4" />
+            <Button
+              variant="outline"
+              className="bg-white/5 border-white/10 text-gray-300 hover:bg-white/10 hover:text-white"
+            >
+              Columns
+              <ChevronDown className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
+          <DropdownMenuContent
+            align="end"
+            className="bg-[#1e1f23] border-white/10"
+          >
             {table
               .getAllColumns()
               .filter((column) => column.getCanHide())
@@ -156,11 +152,9 @@ export function DataTableDemo({ data }: DataTableDemoProps) {
                 return (
                   <DropdownMenuCheckboxItem
                     key={column.id}
-                    className="capitalize text-black"
+                    className="capitalize text-gray-300 hover:bg-white/5"
                     checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
+                    onCheckedChange={(value) => column.toggleVisibility(!!value)}
                   >
                     {column.id}
                   </DropdownMenuCheckboxItem>
@@ -169,20 +163,27 @@ export function DataTableDemo({ data }: DataTableDemoProps) {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="rounded-md border">
+
+      <div className="rounded-xl border border-white/10 overflow-hidden">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
+              <TableRow
+                key={headerGroup.id}
+                className="border-white/10 hover:bg-white/5"
+              >
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id} className="text-black">
+                    <TableHead
+                      key={header.id}
+                      className="text-gray-400 font-medium h-12"
+                    >
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                     </TableHead>
                   );
                 })}
@@ -194,10 +195,14 @@ export function DataTableDemo({ data }: DataTableDemoProps) {
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
+                  className="border-white/10 hover:bg-white/5"
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell
+                      key={cell.id}
+                      className="text-gray-300"
+                    >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -210,26 +215,24 @@ export function DataTableDemo({ data }: DataTableDemoProps) {
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-24 text-center"
+                  className="h-24 text-center text-gray-400"
                 >
-                  No results.
+                  No orders found.
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
       </div>
+
       <div className="flex items-center justify-end space-x-2 py-4">
-        {/* <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
-        </div> */}
-        <div className="space-x-2 px-2">
+        <div className="space-x-2">
           <Button
             variant="outline"
             size="sm"
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
+            className="bg-white/5 border-white/10 text-gray-300 hover:bg-white/10 hover:text-white disabled:opacity-50"
           >
             Previous
           </Button>
@@ -238,6 +241,7 @@ export function DataTableDemo({ data }: DataTableDemoProps) {
             size="sm"
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
+            className="bg-white/5 border-white/10 text-gray-300 hover:bg-white/10 hover:text-white disabled:opacity-50"
           >
             Next
           </Button>

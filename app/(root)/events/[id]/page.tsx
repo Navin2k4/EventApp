@@ -51,239 +51,193 @@ const EventDetails = async ({
   });
 
   return (
-    <div className=" bg-black pb-24">
-      <section className="w-full bg-gradient-to-b pt-24 py-12">
-        <div className="container mx-auto px-4">
-          <Card className="overflow-hidden border-none">
-            <div className="flex flex-col lg:flex-row">
-              <div className="relative w-full lg:w-1/2 h-64 lg:h-auto shadow-xl">
-                <Image
-                  src={event.imageUrl}
-                  alt={event.title}
-                  layout="fill"
-                  objectFit="cover"
-                />
-                <CopyLinkButton eventId={event._id} />
-                {isEventCreator && (
-                  <div className="absolute flex items-start left-3 top-3 p-2 bg-white rounded-lg shadow-md">
-                    <QRComp
-                      eventId={event._id.toString()}
-                      eventTitle={event.title}
-                    />
-                    <div className="ml-3 flex flex-col justify-center">
-                      <h2 className="text-lg font-semibold">Download</h2>
-                      <h2 className="text-lg font-semibold">
-                        Scan for Attendance
-                      </h2>
+    <div className="min-h-screen bg-gradient-to-b from-[#0f1014] to-[#1e1f23]">
+      {/* Hero Banner */}
+      <div className="relative h-[40vh] lg:h-[50vh] w-full">
+        <Image
+          src={event.imageUrl}
+          alt={event.title}
+          layout="fill"
+          objectFit="cover"
+          className="brightness-50"
+          priority
+        />
+        <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px]" />
+        
+        {/* Floating Event Status */}
+        <div className="absolute bottom-6 right-6 flex gap-3">
+          <CopyLinkButton eventId={event._id} />
+          {isEventCreator && (
+            <div className="bg-white/90 backdrop-blur-md rounded-lg p-3 shadow-lg flex items-center gap-3">
+              <QRComp eventId={event._id.toString()} eventTitle={event.title} />
+              <div className="text-sm font-medium">
+                <p>Download QR</p>
+                <p>for Attendance</p>
+              </div>
+            </div>
+          )}
+        </div>
+        
+        {/* Event Title Section */}
+        <div className="absolute bottom-0 left-0 right-0 p-6 lg:p-10 bg-gradient-to-t from-black/80 to-transparent">
+          <div className="wrapper">
+            <div className="flex flex-wrap gap-3 mb-4">
+              {isPurchased && (
+                <Badge className="bg-green-500/20 text-green-500 border-green-500/50 text-sm">
+                  Purchased
+                </Badge>
+              )}
+              <Badge className={event.isFree ? "bg-blue-500/20 text-blue-500" : "bg-[#e41312]/20 text-[#e41312]"}>
+                {event.isFree ? "FREE" : `₹${event.price}`}
+              </Badge>
+              <Badge variant="outline" className="bg-purple-500/20 text-purple-500 border-purple-500/50">
+                {event.category.name}
+              </Badge>
+            </div>
+            <h1 className="text-4xl lg:text-5xl font-bold text-white mb-4">{event.title}</h1>
+            <div className="flex items-center gap-2 text-gray-300">
+              <User className="w-4 h-4" />
+              <p>Organized by {event.organizer.firstName} {event.organizer.lastName}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="wrapper py-10">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Main Content */}
+          <div className="lg:col-span-2 space-y-8">
+            {/* Event Details */}
+            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 space-y-6">
+              <h2 className="text-2xl font-semibold text-white">About Event</h2>
+              <p className="text-gray-300 leading-relaxed">{event.description}</p>
+              
+              {event.url && (
+                <a 
+                  href={event.url}
+                  target="_blank"
+                  rel="noopener noreferrer" 
+                  className="inline-flex items-center gap-2 text-[#e41312] hover:text-[#ff4b48] transition-colors"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                  Visit Event Website
+                </a>
+              )}
+            </div>
+
+            {/* Event Location */}
+            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 space-y-4">
+              <h2 className="text-2xl font-semibold text-white">Location</h2>
+              <div className="flex items-start gap-3">
+                <MapPin className="w-5 h-5 text-[#e41312] mt-1" />
+                <p className="text-gray-300">{event.location}</p>
+              </div>
+              {event.mapLocation && (
+                <div className="mt-4 rounded-lg overflow-hidden">
+                  <iframe
+                    src={event.mapLocation}
+                    width="100%"
+                    height="300"
+                    loading="lazy"
+                    className="border-0"
+                  />
+                </div>
+              )}
+            </div>
+
+            {/* Coordinators */}
+            {event.coordinators && event.coordinators.length > 0 && (
+              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 space-y-4">
+                <h2 className="text-2xl font-semibold text-white">Event Coordinators</h2>
+                <div className="grid gap-4">
+                  {event.coordinators.map((coordinator: any, index: any) => (
+                    <div key={index} className="flex items-center justify-between bg-white/5 rounded-lg p-4">
+                      <div>
+                        <p className="text-white font-medium">{coordinator.name}</p>
+                        <p className="text-gray-400 text-sm">{coordinator.email}</p>
+                        <p className="text-gray-400 text-sm">{coordinator.phone}</p>
+                      </div>
+                      <a
+                        href={`mailto:${coordinator.email}`}
+                        className="flex items-center gap-2 text-[#e41312] hover:text-[#ff4b48] transition-colors"
+                      >
+                        <Mail className="w-4 h-4" />
+                        <span>Contact</span>
+                      </a>
                     </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Sidebar */}
+          <div className="space-y-6">
+            {/* Event Info Card */}
+            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 space-y-6">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xl font-semibold text-white">Event Details</h3>
+                {event.eventCapacity && (
+                  <div className="flex items-center gap-2 text-gray-300">
+                    <Users className="w-4 h-4" />
+                    <span>{event.eventCapacity} spots</span>
                   </div>
                 )}
               </div>
 
-              <CardContent className="w-full lg:w-1/2 p-6 lg:p-10 bg-gray-300">
-                <CardHeader className="p-0 mb-6 relative">
-                  {/* Event Creator Indicator and Image */}
-
-                  <div className="flex flex-wrap items-center gap-3 mb-4">
-                    {isPurchased && (
-                      <Badge
-                        variant="outline"
-                        className="bg-green-100 border-black text-md py-1 px-3"
-                      >
-                        Purchased
-                      </Badge>
-                    )}
-                    <Badge
-                      variant={
-                        event.isFree || event.price === ""
-                          ? "outline"
-                          : "destructive"
-                      }
-                      className="text-lg py-1 px-3 border-white"
-                    >
-                      {event.isFree || event.price === ""
-                        ? "FREE"
-                        : `Rs.${event.price}`}
-                    </Badge>
-                    <Badge
-                      variant="outline"
-                      className="bg-purple-100 border-black text-md py-1 px-3"
-                    >
-                      {event.category.name}
-                    </Badge>
-                  </div>
-
-                  <CardTitle className="text-3xl font-bold text-gray-800 mb-2">
-                    {event.title}
-                  </CardTitle>
-                  <CardDescription className="text-gray-600 flex items-center">
-                    <User className="h-4 w-4 mr-2" />
-                    Organized by {event.organizer.firstName}{" "}
-                    {event.organizer.lastName}
-                  </CardDescription>
-                </CardHeader>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                  <div className="flex items-start gap-3">
-                    <Calendar className="h-5 w-5 text-red-600 mt-1" />
-                    <div>
-                      <p className="font-semibold text-gray-800">Date</p>
-                      <p className="text-gray-600">
-                        {formatDateTime(event.startDateTime).dateOnly}
-                      </p>
-                      <p className="text-gray-600">
-                        {formatDateTime(event.endDateTime).dateOnly}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <Clock className="h-5 w-5 text-red-600 mt-1" />
-                    <div>
-                      <p className="font-semibold text-gray-800">Time</p>
-                      <p className="text-gray-600">
-                        {formatDateTime(event.startDateTime).timeOnly} -{" "}
-                        {formatDateTime(event.endDateTime).timeOnly}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <MapPin className="h-5 w-5 text-red-600 mt-1" />
-                    <div>
-                      <p className="font-semibold text-gray-800">Location</p>
-                      <p className="text-gray-600">{event.location}</p>
-                    </div>
-                  </div>
-
-                  {/* New Event Capacity Section */}
-                  <div className="flex items-start gap-3 ">
-                    <Users className="h-5 w-5 text-red-600 mt-1" />
-                    <div>
-                      <p className="font-semibold text-gray-800">
-                        Event Capacity
-                      </p>
-                      <p className="text-gray-600">
-                        {event.eventCapacity ? event.eventCapacity : "N/A"}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                {/* <div className="flex-center flex-col py-5 rounded-lg bg-white text-grey-500">
-                  <Map width={60} height={60} />
-                  <h3 className="mb-2 mt-2">Location Placeholder</h3>
-                  <p className="p-medium-12">
-                    Call API and try to get the map of the given location
-                  </p>
-                </div> */}
-                {event.mapLocation && (
-                  <div className="flex-center flex-col rounded-lg bg-white text-grey-500">
-                    <iframe
-                      src={event.mapLocation}
-                      width="600"
-                      height="200"
-                      loading="lazy"
-                    ></iframe>
-                  </div>
-                )}
-                {/* Event Description */}
-                <div className="space-y-4 my-6">
-                  <h3 className="text-xl font-semibold text-gray-800">
-                    Event Description
-                  </h3>
-                  <p className="text-gray-600 leading-relaxed">
-                    {event.description}
-                  </p>
-                  <Link
-                    href={event.url}
-                    className="inline-flex items-center text-red-600 hover:text-purple-800 transition-colors"
-                  >
-                    <ExternalLink className="h-4 w-4 mr-2" />
-                    Event Website
-                  </Link>
-                </div>
-                {/* New Coordinators Section */}
-                {event.coordinators && event.coordinators.length > 0 && (
-                  <div className="space-y-4 mb-8">
-                    <h3 className="text-xl font-semibold text-gray-800">
-                      Coordinators
-                    </h3>
-                    {event.coordinators.length > 0 ? (
-                      <ul className="space-y-2">
-                        {event.coordinators.map(
-                          (
-                            coordinator: {
-                              name: string | null | undefined;
-                              email: string | null | undefined;
-                              phone: string | null | undefined;
-                            },
-                            index: Key | null | undefined
-                          ) => (
-                            <li
-                              key={index}
-                              className="flex flex-col sm:flex-row items-start sm:items-center justify-between px-4 py-3.5 bg-white rounded-lg shadow-md transition hover:shadow-lg space-y-3 sm:space-y-0"
-                            >
-                              <div className="flex flex-col">
-                                <span className="font-medium text-gray-800">
-                                  {coordinator.name || "N/A"}
-                                </span>
-                                <span className="text-sm md:text-md text-gray-600">
-                                  {coordinator.email || "N/A"}
-                                </span>
-                                <span className="text-sm md:text-md text-gray-600">
-                                  {coordinator.phone || "N/A"}
-                                </span>
-                              </div>
-                              <a
-                                href={`mailto:${coordinator.email}`}
-                                className="flex items-center hover:cursor-pointer hover:bg-red-500 px-2 py-1 hover:text-white gap-2 text-red-600 rounded-lg transition-all duration-300 focus:outline-none"
-                              >
-                                <Mail />
-                                <h2>Contact</h2>
-                              </a>
-                            </li>
-                          )
-                        )}
-                      </ul>
-                    ) : (
-                      <p className="text-gray-600">
-                        No coordinators available.
-                      </p>
-                    )}
-                  </div>
-                )}
-
-                {isPurchased ? (
-                  <div className="flex items-center justify-between bg-gray-200 p-4 rounded-lg shadow-md">
-                    <p className="text-lg font-semibold">
-                      You have already purchased! Scan for Attandance
+              <div className="space-y-4">
+                <div className="flex items-start gap-3">
+                  <Calendar className="w-5 h-5 text-[#e41312] mt-1" />
+                  <div>
+                    <p className="text-white font-medium">Date</p>
+                    <p className="text-gray-400">
+                      {formatDateTime(event.startDateTime).dateOnly} - {formatDateTime(event.endDateTime).dateOnly}
                     </p>
-                    <button
-                      className="p-2 border border-black rounded-md hover:bg-black hover:text-white transition-colors duration-300"
-                      type="button"
-                    >
-                      <QrCode height={32} width={32} />
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <Clock className="w-5 h-5 text-[#e41312] mt-1" />
+                  <div>
+                    <p className="text-white font-medium">Time</p>
+                    <p className="text-gray-400">
+                      {formatDateTime(event.startDateTime).timeOnly} - {formatDateTime(event.endDateTime).timeOnly}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Purchase/QR Section */}
+              <div className="pt-4 border-t border-gray-700">
+                {isPurchased ? (
+                  <div className="bg-white/10 rounded-lg p-4 text-center">
+                    <p className="text-white mb-3">Show QR for Attendance</p>
+                    <button className="mx-auto p-3 bg-white/10 rounded-lg hover:bg-white/20 transition-colors">
+                      <QrCode className="w-6 h-6 text-white" />
                     </button>
                   </div>
                 ) : (
                   <CheckoutButton event={event} />
                 )}
-              </CardContent>
+              </div>
             </div>
-          </Card>
+          </div>
         </div>
-      </section>
-      {/* EVENTS with the same category */}
-      <section className="wrapper  flex flex-col gap-8 md:gap-12">
-        <h2 className="h2-bold text-[#e41312]">Related Events</h2>
-        <Collection
-          data={relatedEvents?.data}
-          emptyTitle="No Events Found"
-          emptyStateSubtext="Come back later"
-          collectionType="All_Events"
-          limit={3}
-          page={searchParams.page as string}
-          totalPages={relatedEvents?.totalPages}
-        />
-      </section>
+
+        {/* Related Events */}
+        <section className="mt-20">
+          <h2 className="text-3xl font-bold text-white mb-8">Similar Events</h2>
+          <Collection
+            data={relatedEvents?.data}
+            emptyTitle="No Related Events Found"
+            emptyStateSubtext="Check back later for more events"
+            collectionType="All_Events"
+            limit={3}
+            page={searchParams.page as string}
+            totalPages={relatedEvents?.totalPages}
+          />
+        </section>
+      </div>
     </div>
   );
 };
